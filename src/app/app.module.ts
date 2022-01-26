@@ -13,7 +13,7 @@ import { DialogEditComponent } from './components/dialog/dialog-edit/dialog-edit
 import { ContractListComponent } from './components/list/contract-list/contract-list.component';
 import { DialogCreateContractComponent } from './components/dialog/dialog-create-contract/dialog-create-contract.component';
 
-import {MatTableDataSource, MatTableModule} from '@angular/material/table'
+import {MatTableModule} from '@angular/material/table'
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
@@ -28,7 +28,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { DialogEditContractComponent } from './components/dialog/dialog-edit-contract/dialog-edit-contract.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -61,7 +61,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatStepperModule,
     ReactiveFormsModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

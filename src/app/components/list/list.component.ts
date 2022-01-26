@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Contract } from 'src/app/models/contract';
+import {  Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog} from '@angular/material/dialog';
 import { Worker } from 'src/app/models/worker';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { WorkerService } from 'src/app/services/worker/worker.service';
@@ -14,6 +13,9 @@ import { StateService } from 'src/app/services/state/state.service';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { AddressService } from 'src/app/services/address/address.service';
+import { Address } from 'src/app/models/address';
+import {MatAccordion} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-list',
@@ -23,28 +25,28 @@ import { MatSort } from '@angular/material/sort';
 export class ListComponent implements OnInit {
 
   workers: Worker[] = [];
-  contracts : Contract[] = [];
-  date : Date = new Date();
-  displayedColumns: string[] = ['id', 'fullName', 'nationality', 'dni', 'bornDate', 'state', 'delete', 'edit', 'contract'];
+  address: Address[] = [];
+
+  displayedColumns: string[] = ['id', 'fullName', 'nationality', 'dni', 'bornDate', 'state', 'delete', 'edit', 'contract', 'address'];
   dataSource = new MatTableDataSource<Worker>(this.workers);
-  workerDelete: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatAccordion) accordion!: MatAccordion;
 
   constructor(public workerService: WorkerService,
-              private contractService : ContractService,
               public dialog: MatDialog,
               private _snackBar: MatSnackBar,
               private router: Router,
               public dateService : DateService,
-              public stateService : StateService) { }
+              public stateService : StateService,
+              public addressService : AddressService) { }
 
   ngOnInit(): void {
     this.getWorkers()
-    this.getContracts()
+    this.getAddress()
     this.dataSource = new MatTableDataSource<Worker>(this.workers);
-    console.log(this.workers)
+    console.log(this.address)
   }
 
   ngAfterViewInit() {
@@ -87,6 +89,9 @@ export class ListComponent implements OnInit {
         this.showSnackBarError(result, "Acción cancelada")
       }
     })
+  }
+
+  openDialogDeleteAddress(workerId : number){
   }
 
   showSnackBar(acctionDone:string, message: string){
@@ -132,16 +137,21 @@ export class ListComponent implements OnInit {
     this.ngOnInit()
   }
 
-  
+  workerHasAddress(workerId : number) : boolean{
+    var exist = this.address.filter(address => address.idWorker === workerId )
+    if (exist.length > 0) {
+      return true
+    } else {
+      return false
+    }
+  }
 
   getWorkers(): void{
     this.workerService.getWorkers()
-                      .subscribe(worker => {
-                        this.workers = worker
-                      });
+                      .subscribe(worker => this.workers = worker);
   }
-  getContracts() : void {
-    this.contractService.getContracts()
-                        .subscribe(contract => this.contracts = contract)
+  getAddress() :void{
+    this.addressService.getAddress()
+                      .subscribe(address => this.address = address)
   }
 }
