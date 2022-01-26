@@ -1,0 +1,81 @@
+<div class="button-start-create">
+    <button mat-raised-button color="primary" class="nav-bar__buttons" (click)="goBack()"> <mat-icon>reply</mat-icon> Volver</button>
+</div>
+<div class="card-create">
+    <mat-card>
+        <mat-card-title>Crear empleado</mat-card-title>
+        <div class="steps-worker">
+            <mat-stepper [linear]="false" #stepper>
+                <mat-step [stepControl]="firstFormGroupWorker">
+                    <form [formGroup]="firstFormGroupWorker">
+                        <ng-template matStepLabel>Datos personales</ng-template>
+                        <div class="flex-formfield">
+                            <mat-form-field appearance="outline" color="accent">
+                                <mat-label>Nombre</mat-label>
+                                <input matInput  formControlName="nameCtrl" required class="input-formgroup" [(ngModel)]="newWorker.name">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" color="accent">
+                                <mat-label>Primer apellido</mat-label>
+                                <input matInput  formControlName="firstNameCtrl" required class="input-formgroup" [(ngModel)]="newWorker.firstName">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" color="accent">
+                                <mat-label>Segundo apellido</mat-label>
+                                <input matInput  formControlName="lastNameCtrl" required class="input-formgroup" [(ngModel)]="newWorker.lastName">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" color="accent">
+                                <mat-label>DNI</mat-label>
+                                <input matInput placeholder="11111111A" formControlName="dniCtrl" required class="input-formgroup" [(ngModel)]="newWorker.dni">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Fecha inicio contrato</mat-label>
+                                <input matInput [matDatepicker]="picker"
+                                       (dateChange)="editDate($event)" disabled>
+                                <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                                <mat-datepicker #picker disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div>
+                            <p>{{checkAllInputsGroup1AreFiled()}}</p>
+                            <button mat-button matStepperNext *ngIf="canFollowStep2">Siguiente</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="secondFormGroupWorker" label="Extras">
+                  <form [formGroup]="secondFormGroupWorker">
+                    <div class="flex-formfield">
+                        <mat-form-field appearance="outline" color="accent">
+                            <mat-label>Nacionalidad</mat-label>
+                            <input matInput  formControlName="nationalityCtrl" required class="input-formgroup" color="accent" [(ngModel)]="newWorker.nationality">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" color="accent">
+                            <mat-label>Estado</mat-label>
+                            <mat-select [(value)]="newWorker.state">
+                              <mat-option *ngFor="let state of states" [value]="state.value">
+                                {{state.text}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+                    <div>
+                      <button mat-button matStepperPrevious>Atrás</button>
+                      <p>{{canCreateWorker()}}</p>
+                      <button mat-button matStepperNext (click)="createWorker()" *ngIf="canCreate">Crear empleado</button>
+                    </div>
+                  </form>
+                </mat-step>
+                <mat-step>
+                  <ng-template matStepLabel>Finalización</ng-template>
+                  <p>¡Empleado creado con éxito!</p>
+                  <div>
+                    <button mat-button (click)="goBack()">Volver a las listas</button>
+                    <button mat-button (click)="stepper.reset()">Crear otro</button>
+                  </div>
+                </mat-step>
+            </mat-stepper>
+        </div>
+        <div class="steps-contract">
+
+        </div>
+    </mat-card>
+</div>

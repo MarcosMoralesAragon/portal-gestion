@@ -1,0 +1,57 @@
+<h2>Editar empleado</h2>
+<div class="grid-inputs">
+    <p>
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Nombre</mat-label>
+            <input matInput [(ngModel)]="workerEditing.name">
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Primer Apellido</mat-label>
+            <input matInput [(ngModel)]="workerEditing.firstName">
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Segundo Apellido</mat-label>
+            <input matInput [(ngModel)]="workerEditing.lastName">
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>DNI</mat-label>
+            <input matInput [(ngModel)]="workerEditing.dni">
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input matInput [matDatepicker]="picker"
+                   (dateChange)="editDate($event)" disabled>
+                   <p *ngIf="!dateChanged">{{dateService.getDate(workerEditing.bornDate)}}</p>
+            <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+            <mat-datepicker #picker disabled="false"></mat-datepicker>
+          </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Nacionalidad</mat-label>
+            <input matInput [(ngModel)]="workerEditing.nationality">
+        </mat-form-field>
+    </p>
+    <p id="lastInput">
+        <mat-form-field appearance="fill" color="accent">
+            <mat-label>Estado</mat-label>
+            <mat-select [(value)]="workerEditing.state">
+              <mat-option *ngFor="let state of states" [value]="state.value">
+                {{state.text}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </p>
+</div>
+<div class="flex-buttons">
+    <button mat-raised-button color="accent" (click)="cancel()">Cancelar <mat-icon>cancel</mat-icon> </button>
+    <button mat-raised-button color="warn" (click)="edit()">Aplicar cambios <mat-icon>edit</mat-icon> </button>
+</div>

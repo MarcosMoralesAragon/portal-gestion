@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Borrar</h1>
+<div mat-dialog-content>
+  <p>¿Esta seguro que desea eliminarlo?</p>
+</div>
+<div mat-dialog-actions class="grid-botones-modaldelete">
+  <button mat-raised-button color="accent"(click)="cancelDialog()">Cancelar <mat-icon>cancel</mat-icon> </button>
+  <button mat-raised-button color="warn" (click)="deleteDialog()">Borrar <mat-icon>delete</mat-icon> </button>
+</div>  
