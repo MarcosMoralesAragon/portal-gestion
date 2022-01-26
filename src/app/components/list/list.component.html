@@ -79,10 +79,7 @@
                 <span class="span-expansion">Provincia : {{addressService.getAddressOfWorker(element.id)!.province}}</span>      <br>
               </div>
               <div class="grid-expansion-edit">
-                <button mat-raised-button color="accent"><mat-icon>edit</mat-icon> </button>
-              </div>
-              <div class="grid-expansion-delete">
-                <button mat-raised-button color="warn" (click)="openDialogDeleteAddress(element.id)"><mat-icon>delete</mat-icon> </button>
+                <button mat-raised-button color="accent" (click)="openDialogEditAddress(element.id)"><mat-icon>edit</mat-icon> </button>
               </div>
             </div>
           </mat-expansion-panel>

@@ -91,7 +91,8 @@ export class ListComponent implements OnInit {
     })
   }
 
-  openDialogDeleteAddress(workerId : number){
+  openDialogEditAddress(workerId : number){
+    console.log("edit")
   }
 
   showSnackBar(acctionDone:string, message: string){
