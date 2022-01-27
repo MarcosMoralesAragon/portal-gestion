@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { State } from 'src/app/models/state';
 import { Worker } from '../../models/worker';
+import { AddressService } from '../address/address.service';
+import { BinService } from '../bin/bin.service';
 
 @Injectable({
   providedIn: 'root'
@@ -92,15 +94,20 @@ export class WorkerService {
     bornDate: new Date()
   }]
 
-  constructor() { }
+  constructor(public addressService : AddressService,
+              public binService : BinService) { }
 
   getWorkers() : Observable<Worker[]>{
+    for (let i = 0; i < this.workers.length; i++) {
+      this.workers[i].address = this.addressService.getAddressOfWorker(this.workers[i].id)      
+    }
     return of(this.workers)
   }
 
   deleteWorker(workerId : number){
+    this.binService.addToBin(this.workers.find(worker => worker.id === workerId)!)
     this.workers =  this.workers.filter(worker => worker.id !== workerId);
-    console.log(this.workers)
+    this.addressService.deleteAddress(workerId);
   }
 
   updateWorker(workerChanged : Worker){
@@ -124,6 +131,12 @@ export class WorkerService {
     var workerSearched : Worker
     workerSearched = this.workers.find(worker => worker.id === idWorker)!
     return workerSearched.name + " " + workerSearched.firstName + " " + workerSearched.lastName
+  }
+
+  restoreAllBin(workerList : Worker[]){
+    for (let i = 0; i < workerList.length; i++) {
+      this.addWorkers(workerList[i])
+    }
   }
 
 }

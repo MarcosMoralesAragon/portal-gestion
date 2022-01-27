@@ -3,9 +3,7 @@
 <div class="flex-buttons-start">
   <button mat-raised-button color="accent" class="flex-buttons-start__button" (click)="navigateToCreate()">Añadir <mat-icon>add</mat-icon> </button>
   <button mat-raised-button color="primary" class="flex-buttons-start__button" (click)="refreshButton()">Actualizar <mat-icon>refresh</mat-icon> </button>
-  <div class="seeDelete">
-    <button mat-raised-button color="primary" class="flex-buttons-start__button"> Ver papelera <mat-icon>delete</mat-icon> </button>
-  </div>
+  <button mat-raised-button color="primary" class="flex-buttons-start__button" (click)="navigateToSeeDelete()"> Ver papelera <mat-icon matBadge="{{binService.getBinLength()}}" matBadgeOverlap="false">delete</mat-icon> </button>
 </div>
 
 <div class="table-and-paginator">
@@ -63,20 +61,20 @@
     <ng-container matColumnDef="address" class="table-icon">
       <th mat-header-cell *matHeaderCellDef class="table-header"> Dirección </th>
       <td mat-cell *matCellDef="let element" class="table-data">
-        <mat-accordion class="example-headers-align" multi *ngIf="workerHasAddress(element.id)">
+        <mat-accordion class="example-headers-align" multi *ngIf="element.address">
           <mat-expansion-panel> 
             <mat-expansion-panel-header>
-              <span>{{addressService.getAddressOfWorker(element.id)!.street}}</span>
+              <span>C/ {{element.address.street}}</span>
             </mat-expansion-panel-header>
             <div class="grid-expansion">
               <div class="grid-expansion-info">
-                <span class="span-expansion">Numero : {{addressService.getAddressOfWorker(element.id)!.number}}</span>           <br>
-                <span class="span-expansion">Bloque : {{addressService.getAddressOfWorker(element.id)!.block}}</span>            <br>
-                <span class="span-expansion">Planta : {{addressService.getAddressOfWorker(element.id)!.floor}}</span>            <br>
-                <span class="span-expansion">Puerta : {{addressService.getAddressOfWorker(element.id)!.door}}</span>             <br>
-                <span class="span-expansion">Codigo postal : {{addressService.getAddressOfWorker(element.id)!.postCode}}</span>  <br>
-                <span class="span-expansion">Localidad : {{addressService.getAddressOfWorker(element.id)!.localty}}</span>       <br>
-                <span class="span-expansion">Provincia : {{addressService.getAddressOfWorker(element.id)!.province}}</span>      <br>
+                <span class="span-expansion">Numero : {{element.address.number}}</span>           <br>
+                <span class="span-expansion">Bloque : {{element.address.block}}</span>            <br>
+                <span class="span-expansion">Planta : {{element.address.floor}}</span>            <br>
+                <span class="span-expansion">Puerta : {{element.address.door}}</span>             <br>
+                <span class="span-expansion">Codigo postal : {{element.address.postCode}}</span>  <br>
+                <span class="span-expansion">Localidad : {{element.address.localty}}</span>       <br>
+                <span class="span-expansion">Provincia : {{element.address.province}}</span>      <br>
               </div>
               <div class="grid-expansion-edit">
                 <button mat-raised-button color="accent" (click)="openDialogEditAddress(element.id)"><mat-icon>edit</mat-icon> </button>
@@ -84,7 +82,7 @@
             </div>
           </mat-expansion-panel>
         </mat-accordion>
-        <button mat-raised-button *ngIf="!workerHasAddress(element.id)">Añadir <mat-icon>add</mat-icon> </button>
+        <button mat-raised-button *ngIf="!element.address" (click)="openDialogCreateAddress(element.id)">Añadir <mat-icon>add</mat-icon> </button>
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

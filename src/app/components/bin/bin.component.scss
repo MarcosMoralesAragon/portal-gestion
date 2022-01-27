@@ -5,6 +5,7 @@
 .flex-buttons-start__button{
     margin: 5px;
 }
+
 .table-and-paginator{
     width: 95%;
     margin: 2%;
@@ -28,14 +29,4 @@ th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:la
 
 h2{
     margin: 10px;
-}
-.span-expansion{
-    margin: 5px;
-}
-
-.grid-expansion{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    justify-content: center;
-    align-items: center;
 }

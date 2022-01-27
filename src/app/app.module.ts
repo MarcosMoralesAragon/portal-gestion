@@ -10,8 +10,11 @@ import { CreateComponent } from './components/create/create/create.component';
 import { DialogDeleteComponent } from './components/dialog/dialog-delete/dialog-delete.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { DialogEditComponent } from './components/dialog/dialog-edit/dialog-edit.component';
-import { ContractListComponent } from './components/list/contract-list/contract-list.component';
+import { ContractListComponent } from './components/contract-list/contract-list.component';
 import { DialogCreateContractComponent } from './components/dialog/dialog-create-contract/dialog-create-contract.component';
+import { DialogEditAddressComponent } from './components/dialog/dialog-edit-address/dialog-edit-address.component';
+import { DialogCreateAddressComponent } from './components/dialog/dialog-create-address/dialog-create-address.component';
+import { BinComponent } from './components/bin/bin.component';
 
 import {MatTableModule} from '@angular/material/table'
 import {MatIconModule} from '@angular/material/icon';
@@ -29,6 +32,7 @@ import { DialogEditContractComponent } from './components/dialog/dialog-edit-con
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -40,7 +44,10 @@ import {MatExpansionModule} from '@angular/material/expansion';
     SnackbarComponent,
     ContractListComponent,
     DialogCreateContractComponent,
-    DialogEditContractComponent
+    DialogEditContractComponent,
+    DialogEditAddressComponent,
+    DialogCreateAddressComponent,
+    BinComponent
     ],
   imports: [
     BrowserModule,
@@ -62,7 +69,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     ReactiveFormsModule,
     MatPaginatorModule,
     MatSortModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

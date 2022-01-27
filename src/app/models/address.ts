@@ -2,7 +2,7 @@
 export interface Address {
     id : number;
     street: string;
-    number : number;
+    number? : number;
     block: string;
     floor: string;
     door: string;

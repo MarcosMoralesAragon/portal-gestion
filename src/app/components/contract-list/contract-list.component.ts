@@ -7,10 +7,10 @@ import { ContractService } from 'src/app/services/contract/contract.service';
 import { DateService } from 'src/app/services/date/date.service';
 import { PositionService } from 'src/app/services/position/position.service';
 import { WorkerService } from 'src/app/services/worker/worker.service';
-import { SnackbarComponent } from '../../snackbar/snackbar.component';
-import { DialogDeleteComponent } from '../../dialog/dialog-delete/dialog-delete.component';
-import { DialogCreateContractComponent } from '../../dialog/dialog-create-contract/dialog-create-contract.component';
-import { DialogEditContractComponent } from '../../dialog/dialog-edit-contract/dialog-edit-contract.component';
+import { SnackbarComponent } from '../snackbar/snackbar.component';
+import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component';
+import { DialogCreateContractComponent } from '../dialog/dialog-create-contract/dialog-create-contract.component';
+import { DialogEditContractComponent } from '../dialog/dialog-edit-contract/dialog-edit-contract.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -79,7 +79,7 @@ export class ContractListComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
 
-      if(result.result == "create"){
+      if(result?.result == "create"){
         this.contractService.addContract(result.contract)
         this.ngOnInit()
         this.ngAfterViewInit()
@@ -96,7 +96,7 @@ export class ContractListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
 
-      if(result.result == "edit"){
+      if(result?.result == "edit"){
 
         this.contractService.updateContract(result.contract)
         this.ngOnInit()

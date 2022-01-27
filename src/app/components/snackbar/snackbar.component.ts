@@ -14,7 +14,7 @@ export class SnackbarComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.data)
-    if ((this.data.acctionDoneSnackbar == "delete") || (this.data.acctionDoneSnackbar == "edit") || (this.data.acctionDoneSnackbar == "create")) {
+    if (this.data.acctionDoneSnackbar != "cancel") {
       this.acctionSuccesfull = true;
     }
   }

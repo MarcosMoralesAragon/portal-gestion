@@ -1,0 +1,39 @@
+<h2>Editar Dirección</h2>
+<div class="grid-inputs">
+    <mat-form-field appearance="outline" color="accent" class="input-field">
+        <mat-label>Calle</mat-label>
+        <input matInput [(ngModel)]="addressEditing.street">
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="accent" class="input-field">
+        <mat-label>Numero</mat-label>
+        <input matInput [(ngModel)]="addressEditing.number">
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="accent" class="input-field">
+        <mat-label>Bloque</mat-label>
+        <input matInput [(ngModel)]="addressEditing.block">
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="accent" class="input-field">
+        <mat-label>Planta</mat-label>
+        <input matInput [(ngModel)]="addressEditing.floor">
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="accent" class="input-field">
+        <mat-label>Puerta</mat-label>
+        <input matInput [(ngModel)]="addressEditing.door">
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="accent" class="input-field">
+        <mat-label>Código postal</mat-label>
+        <input matInput [(ngModel)]="addressEditing.postCode">
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="accent" class="input-field">
+        <mat-label>Localidad</mat-label>
+        <input matInput [(ngModel)]="addressEditing.localty">
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="accent" class="input-field">
+        <mat-label>Provincia</mat-label>
+        <input matInput [(ngModel)]="addressEditing.province">
+    </mat-form-field>
+</div>
+<div class="flex-buttons">
+    <button mat-raised-button color="accent" (click)="cancel()" class="button-end">Cancelar <mat-icon>cancel</mat-icon> </button>
+    <button mat-raised-button color="warn" (click)="edit" class="button-end">Aplicar cambios <mat-icon>edit</mat-icon> </button>
+</div>

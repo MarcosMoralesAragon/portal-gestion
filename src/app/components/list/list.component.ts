@@ -14,8 +14,10 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { AddressService } from 'src/app/services/address/address.service';
-import { Address } from 'src/app/models/address';
-import {MatAccordion} from '@angular/material/expansion';
+
+import { DialogEditAddressComponent } from '../dialog/dialog-edit-address/dialog-edit-address.component';
+import { DialogCreateAddressComponent } from '../dialog/dialog-create-address/dialog-create-address.component';
+import { BinService } from 'src/app/services/bin/bin.service';
 
 @Component({
   selector: 'app-list',
@@ -25,14 +27,12 @@ import {MatAccordion} from '@angular/material/expansion';
 export class ListComponent implements OnInit {
 
   workers: Worker[] = [];
-  address: Address[] = [];
 
   displayedColumns: string[] = ['id', 'fullName', 'nationality', 'dni', 'bornDate', 'state', 'delete', 'edit', 'contract', 'address'];
   dataSource = new MatTableDataSource<Worker>(this.workers);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatAccordion) accordion!: MatAccordion;
 
   constructor(public workerService: WorkerService,
               public dialog: MatDialog,
@@ -40,13 +40,13 @@ export class ListComponent implements OnInit {
               private router: Router,
               public dateService : DateService,
               public stateService : StateService,
-              public addressService : AddressService) { }
+              public addressService : AddressService,
+              public binService : BinService) { }
 
   ngOnInit(): void {
     this.getWorkers()
-    this.getAddress()
     this.dataSource = new MatTableDataSource<Worker>(this.workers);
-    console.log(this.address)
+    console.log(this.workers)
   }
 
   ngAfterViewInit() {
@@ -79,7 +79,7 @@ export class ListComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(result =>{
-      if(result.result == "edit"){
+      if(result?.result == "edit"){
         this.workerService.updateWorker(result.worker)
         this.ngOnInit()
         this.ngAfterViewInit()
@@ -92,7 +92,37 @@ export class ListComponent implements OnInit {
   }
 
   openDialogEditAddress(workerId : number){
-    console.log("edit")
+    const dialogRef = this.dialog.open(DialogEditAddressComponent, {
+      data : {...this.workers.find(worker => worker.id === workerId)?.address}
+    })
+    dialogRef.afterClosed().subscribe(result =>{
+      if(result?.result == "edit"){
+        this.addressService.updateAddress(result.data)
+        this.ngOnInit()
+        this.ngAfterViewInit()
+        
+        this.showSnackBar(result.result, "¡Editado con éxito!")
+      } else {
+        this.showSnackBarError(result, "Acción cancelada")
+      }
+    })
+  }
+
+  openDialogCreateAddress(workerId : number){
+    const dialogRef = this.dialog.open(DialogCreateAddressComponent, {
+      data : workerId
+    })
+    dialogRef.afterClosed().subscribe(result =>{
+      if(result?.result == "create"){
+        this.addressService.addAddress(result.data)
+        this.ngOnInit()
+        this.ngAfterViewInit()
+        
+        this.showSnackBar(result.result, "¡Editado con éxito!")
+      } else {
+        this.showSnackBarError(result, "Acción cancelada")
+      }
+    })
   }
 
   showSnackBar(acctionDone:string, message: string){
@@ -127,7 +157,7 @@ export class ListComponent implements OnInit {
   }
 
   navigateToSeeDelete(){
-    console.log("See delete")
+    this.router.navigateByUrl('/bin')
   }
 
   navigateToContracts(workerId : number){
@@ -136,23 +166,11 @@ export class ListComponent implements OnInit {
 
   refreshButton(){
     this.ngOnInit()
-  }
-
-  workerHasAddress(workerId : number) : boolean{
-    var exist = this.address.filter(address => address.idWorker === workerId )
-    if (exist.length > 0) {
-      return true
-    } else {
-      return false
-    }
+    this.showSnackBar("refresh", "¡Refrescado con éxito!")
   }
 
   getWorkers(): void{
     this.workerService.getWorkers()
                       .subscribe(worker => this.workers = worker);
-  }
-  getAddress() :void{
-    this.addressService.getAddress()
-                      .subscribe(address => this.address = address)
   }
 }

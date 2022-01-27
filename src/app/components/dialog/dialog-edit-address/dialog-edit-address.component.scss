@@ -1,0 +1,17 @@
+.grid-inputs{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    margin: 10px;
+}
+.input-field{
+    margin: 5px;
+}
+.flex-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.button-end{
+    margin: 5px;
+}

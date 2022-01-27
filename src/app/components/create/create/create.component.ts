@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BinService } from 'src/app/services/bin/bin.service';
 import { WorkerService } from 'src/app/services/worker/worker.service';
 import { Worker } from '../../../models/worker';
 
@@ -30,7 +31,8 @@ export class CreateComponent implements OnInit {
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private workerService : WorkerService,
-              private activatedRoute : ActivatedRoute) { }
+              private activatedRoute : ActivatedRoute,
+              private binService : BinService) { }
 
   ngOnInit(): void {
     this.firstFormGroupWorker = this.formBuilder.group({
@@ -104,7 +106,7 @@ export class CreateComponent implements OnInit {
   }
 
   createWorker(){
-    this,this.newWorker.id = this.workerService.workers.length + 1
+    this,this.newWorker.id = this.workerService.workers.length + this.binService.getBinLength() + 1
     this.workerService.addWorkers(this.newWorker)
     this.ngOnInit()
   }

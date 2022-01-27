@@ -66,8 +66,20 @@ export class AddressService {
     return this.address.find(address => address.idWorker === workerId)
   }
 
+  getAddressLenght() : number{
+    return this.address.length
+  }
+
+  addAddress(newAddress : Address) {
+    this.address.push(newAddress)
+  }
+
   deleteAddress(workerId : number){
     this.address = this.address.filter(address => address.idWorker !== workerId)
-    console.log(this.address)
+  }
+
+  updateAddress(addressEdited : Address){
+    this.address = this.address.filter(address => address.id !== addressEdited.id)
+    this.address.push(addressEdited)
   }
 }

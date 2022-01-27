@@ -1,3 +1,4 @@
+import { Address } from "./address";
 import { State } from "./state";
 
 export interface Worker{
@@ -8,5 +9,6 @@ export interface Worker{
     dni: string
     bornDate: Date;
     nationality: string;
-    state : State
+    state : State;
+    address?: Address
 }
