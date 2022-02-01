@@ -2,7 +2,7 @@ import { Address } from "./address";
 import { State } from "./state";
 
 export interface Worker{
-    id: number;
+    id: string;
     name: string;
     firstName: string;
     lastName: string;

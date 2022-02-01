@@ -10,49 +10,49 @@ export class AddressService {
 
   address : Address[] = [
     {
-      id: 1,
+      id: "1",
       street: "Pasaje de Chinitas",
       number: 3,
       block: "44",
       floor: "2",
       door: "C",
       postCode: 29007,
-      localty: "Málaga",
+      locality: "Málaga",
       province: "Málaga",
-      idWorker: 1
+      idWorker: "1"
     },{
-      id: 2,
+      id: "2",
       street: "Calle Marqués de Larios",
       number: 7,
       block: "53",
       floor: "4",
       door: "D",
       postCode: 29001,
-      localty: "Málaga",
+      locality: "Málaga",
       province: "Málaga",
-      idWorker: 2
+      idWorker: "2"
     },{
-      id: 3,
+      id: "3",
       street: "Calle Comedias",
       number: 9,
       block: "59",
       floor: "3",
       door: "H",
       postCode: 29005,
-      localty: "Málaga",
+      locality: "Málaga",
       province: "Málaga",
-      idWorker: 3
+      idWorker: "3"
     },{
-      id: 4,
+      id: "4",
       street: "Calle Císter",
       number: 1,
       block: "2",
       floor: "2",
       door: "A",
       postCode: 29004,
-      localty: "Málaga",
+      locality: "Málaga",
       province: "Málaga",
-      idWorker: 4
+      idWorker: "4"
     },
 
   ]
@@ -62,7 +62,7 @@ export class AddressService {
     return of(this.address)
   }
 
-  getAddressOfWorker(workerId : number){
+  getAddressOfWorker(workerId : string){
     return this.address.find(address => address.idWorker === workerId)
   }
 
@@ -74,7 +74,7 @@ export class AddressService {
     this.address.push(newAddress)
   }
 
-  deleteAddress(workerId : number){
+  deleteAddress(workerId : string){
     this.address = this.address.filter(address => address.idWorker !== workerId)
   }
 

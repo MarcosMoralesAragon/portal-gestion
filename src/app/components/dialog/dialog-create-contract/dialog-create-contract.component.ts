@@ -33,12 +33,13 @@ export class DialogCreateContractComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    var newId = this.contractService.getContractsLenght() + 1
     this.contractCreating = {
-      id: this.contractService.getContractsLenght() + 1,
+      id: newId.toString(),
       dateStartContract: this.momentDate,
       salary: 950,
       position: 3,
-      idWorkerAsigned: +this.idWorker
+      idWorkerAsigned: this.idWorker
     }
   }
 

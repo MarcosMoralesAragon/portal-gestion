@@ -10,29 +10,29 @@ export class ContractService {
 
   contract: Contract[] = [
     {
-      id: 1,
+      id: "1",
       dateStartContract: new Date(),
-      idWorkerAsigned: 1,
+      idWorkerAsigned: "1",
       position: Position.Executive,
       salary: 1100.50,
       dateEndContract: new Date()
     },{
-      id: 2,
+      id: "2",
       dateStartContract: new Date() ,
-      idWorkerAsigned: 2 ,
+      idWorkerAsigned: "2" ,
       position: Position.Officer,
       salary: 1200.30
     },{
-      id: 3,
+      id: "3",
       dateStartContract: new Date() ,
-      idWorkerAsigned: 3,
+      idWorkerAsigned: "3",
       position: Position.Technician ,
       salary: 1300.90
     }]
 
   constructor() { }
 
-  deleteContract(contractId : number){
+  deleteContract(contractId : string){
     this.contract =  this.contract.filter(contract => contract.id !== contractId);
     console.log(this.contract)
   }
@@ -41,11 +41,11 @@ export class ContractService {
     return of(this.contract)
   }
 
-  getContractsOfWorker(idWorker : number){
+  getContractsOfWorker(idWorker : string){
     return of(this.contract.filter(contract => contract.idWorkerAsigned === idWorker))
   }
 
-  getContract(idContract : number){
+  getContract(idContract : string){
     return this.contract.find(contract => contract.id === idContract)
   }
 
@@ -61,10 +61,5 @@ export class ContractService {
 
     this.contract = this.contract.filter(contract => contract.id !== contractChanged.id)
     this.contract.push(contractChanged)
-
-
-    // var index = this.workers.findIndex(worker => worker.id === workerChanged.id)
-    // this.workers[index] = workerChanged
-    // console.log(this.workers)
   }
 }

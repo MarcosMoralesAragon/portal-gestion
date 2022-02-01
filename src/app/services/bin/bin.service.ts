@@ -21,7 +21,7 @@ export class BinService {
     this.bin = this.bin
   }
 
-  deleteFromBin(workerId : number){
+  deleteFromBin(workerId : string){
     this.bin = this.bin.filter(worker => worker.id !== workerId)
   }
 

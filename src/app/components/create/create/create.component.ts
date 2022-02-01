@@ -47,7 +47,7 @@ export class CreateComponent implements OnInit {
     });
 
     this.newWorker = {
-      id: 0,
+      id: "0",
       name : '',
       firstName: '',
       lastName: '',
@@ -106,7 +106,8 @@ export class CreateComponent implements OnInit {
   }
 
   createWorker(){
-    this,this.newWorker.id = this.workerService.workers.length + this.binService.getBinLength() + 1
+    var id = this.workerService.workers.length + this.binService.getBinLength() + 1
+    this,this.newWorker.id = id.toString()
     this.workerService.addWorkers(this.newWorker)
     this.ngOnInit()
   }

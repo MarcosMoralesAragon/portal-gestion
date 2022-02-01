@@ -18,14 +18,15 @@ export class DialogCreateAddressComponent implements OnInit {
               public addressServices : AddressService) { }
 
   ngOnInit(): void {
+    var idNewAddress = this.addressServices.getAddressLenght() + 1
     this.addressCreating = {
-      id: this.addressServices.getAddressLenght() + 1,
+      id: idNewAddress.toString(),
       street: "",
       block: "",
       floor: "",
       door: "",
       postCode : 0,
-      localty : "",
+      locality : "",
       province : "",
       idWorker : this.data
     }
@@ -36,7 +37,7 @@ export class DialogCreateAddressComponent implements OnInit {
         (this.addressCreating.floor != "") &&
         (this.addressCreating.door != "") &&
         (this.addressCreating.postCode != 0) &&
-        (this.addressCreating.localty != "") &&
+        (this.addressCreating.locality != "") &&
         (this.addressCreating.province != "")) {
           return true
     } else {

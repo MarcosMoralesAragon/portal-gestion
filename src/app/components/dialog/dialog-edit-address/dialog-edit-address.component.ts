@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Address } from 'src/app/models/address';
-import { AddressService } from 'src/app/services/address/address.service';
 
 @Component({
   selector: 'app-dialog-edit-address',

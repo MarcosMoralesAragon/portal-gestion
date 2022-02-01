@@ -42,9 +42,9 @@ export class ContractListComponent implements OnInit {
 
   ngOnInit(): void {
     this.idWorker = this.activatedRoute.snapshot.paramMap.get('id')
-    this.getContracts(+this.idWorker!)
+    this.getContracts(this.idWorker!)
     this.dataSource = new MatTableDataSource<Contract>(this.contracts);
-    this.workerFullName = this.workerService.getFullName(+this.idWorker!)
+    this.workerFullName = this.workerService.getFullName(this.idWorker!)
     console.log(this.contracts)
   }
 
@@ -53,7 +53,7 @@ export class ContractListComponent implements OnInit {
     this.dataSource.sort = this.sort
   }
 
-  openDialogDelete(contractId : number) {
+  openDialogDelete(contractId : string) {
     const dialogRef = this.dialog.open(DialogDeleteComponent);
     dialogRef.afterClosed().subscribe(result => {
 
@@ -90,7 +90,7 @@ export class ContractListComponent implements OnInit {
     });
   }
 
-  openDialogEdit(contractId : number) {
+  openDialogEdit(contractId : string) {
     const dialogRef = this.dialog.open(DialogEditContractComponent, {
       data: {...this.contractService.getContract(contractId)}
     });
@@ -148,7 +148,7 @@ export class ContractListComponent implements OnInit {
     this.ngOnInit()
   }
 
-  getContracts(idWorker: number) : void {
+  getContracts(idWorker: string) : void {
     this.contractService.getContractsOfWorker(idWorker)
                         .subscribe(contract => this.contracts = contract)
   }

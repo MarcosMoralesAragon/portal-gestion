@@ -78,7 +78,7 @@ export class BinComponent implements OnInit {
     this.binService.getBin().subscribe(worker => this.deletedWorkers = worker)
   }
 
-  delete(workerId : number){
+  delete(workerId : string){
     const dialogRef = this.dialog.open(DialogDeleteComponent);
     dialogRef.afterClosed().subscribe(result => {
 
@@ -94,7 +94,7 @@ export class BinComponent implements OnInit {
     });
   }
 
-  restore(workerId : number){
+  restore(workerId : string){
     this.workerService.addWorkers(this.deletedWorkers.find(worker => worker.id === workerId)!)
     this.binService.deleteFromBin(workerId)
     this.ngOnInit()

@@ -1,7 +1,6 @@
 import {  Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
 import { Worker } from 'src/app/models/worker';
-import { ContractService } from 'src/app/services/contract/contract.service';
 import { WorkerService } from 'src/app/services/worker/worker.service';
 import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component';
 import { DialogEditComponent } from '../dialog/dialog-edit/dialog-edit.component';
@@ -54,7 +53,7 @@ export class ListComponent implements OnInit {
     this.dataSource.sort = this.sort
   }
 
-  openDialogDelete(workerId : number) {
+  openDialogDelete(workerId : string) {
     const dialogRef = this.dialog.open(DialogDeleteComponent);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -71,7 +70,7 @@ export class ListComponent implements OnInit {
     });
   }
 
-  openDialogEdit(workerId : number){
+  openDialogEdit(workerId : string){
     const dialogRef = this.dialog.open(DialogEditComponent, {
       width: '800px',
       height: '600px',
@@ -91,7 +90,7 @@ export class ListComponent implements OnInit {
     })
   }
 
-  openDialogEditAddress(workerId : number){
+  openDialogEditAddress(workerId : string){
     const dialogRef = this.dialog.open(DialogEditAddressComponent, {
       data : {...this.workers.find(worker => worker.id === workerId)?.address}
     })
@@ -108,7 +107,7 @@ export class ListComponent implements OnInit {
     })
   }
 
-  openDialogCreateAddress(workerId : number){
+  openDialogCreateAddress(workerId : string){
     const dialogRef = this.dialog.open(DialogCreateAddressComponent, {
       data : workerId
     })
@@ -160,7 +159,7 @@ export class ListComponent implements OnInit {
     this.router.navigateByUrl('/bin')
   }
 
-  navigateToContracts(workerId : number){
+  navigateToContracts(workerId : string){
     this.router.navigateByUrl('/list-contracts/' + workerId)
   }
 

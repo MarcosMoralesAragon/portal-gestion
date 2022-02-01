@@ -1,13 +1,13 @@
 
 export interface Address {
-    id : number;
+    id : string;
     street: string;
     number? : number;
     block: string;
     floor: string;
     door: string;
     postCode : number;
-    localty : string;
+    locality : string;
     province : string;
-    idWorker : number
+    idWorker : string
 }

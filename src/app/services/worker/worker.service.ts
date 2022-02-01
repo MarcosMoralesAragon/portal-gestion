@@ -12,7 +12,7 @@ export class WorkerService {
 
   workers:Worker[] = [
     {
-    id: 1,
+    id: "1",
     name: "Marcos",
     dni: "12345678A",
     firstName: "Morales",
@@ -21,7 +21,7 @@ export class WorkerService {
     state : State.Working,
     bornDate: new Date()
   },{
-    id: 2,
+    id: "2",
     name: "Sergio",
     dni: "12345678B",
     firstName: "García",
@@ -30,7 +30,7 @@ export class WorkerService {
     state : State.Working,
     bornDate: new Date()
   },{
-    id: 3,
+    id: "3",
     name: "Noel",
     dni: "12345678Q",
     firstName: "Millan",
@@ -39,7 +39,7 @@ export class WorkerService {
     state : State.Working,
     bornDate: new Date()
   },{
-    id: 4,
+    id: "4",
     name: "Ander",
     dni: "12345678Q",
     firstName: "García",
@@ -48,7 +48,7 @@ export class WorkerService {
     state : State.Working,
     bornDate: new Date()
   },{
-    id: 5,
+    id: "5",
     name: "Eustaqui",
     dni: "12345678U",
     firstName: "Habichuela",
@@ -57,7 +57,7 @@ export class WorkerService {
     state : State.Working,
     bornDate: new Date()
   },{
-    id: 6,
+    id: "6",
     name: "Javier",
     dni: "12345678I",
     firstName: "Rodrigez",
@@ -66,7 +66,7 @@ export class WorkerService {
     state : State.Working,
     bornDate: new Date()
   },{
-    id: 7,
+    id: "7",
     name: "Manuel",
     dni: "12345678S",
     firstName: "Millon",
@@ -75,7 +75,7 @@ export class WorkerService {
     state : State.Working,
     bornDate: new Date()
   },{
-    id: 8,
+    id: "8",
     name: "Fernando Ivan",
     dni: "12345678F",
     firstName: "Sevilla",
@@ -84,7 +84,7 @@ export class WorkerService {
     state : State.Working,
     bornDate: new Date()
   },{
-    id: 9,
+    id: "9",
     name: "Gonzalo",
     dni: "12345678J",
     firstName: "Salmeron",
@@ -104,7 +104,7 @@ export class WorkerService {
     return of(this.workers)
   }
 
-  deleteWorker(workerId : number){
+  deleteWorker(workerId : string){
     this.binService.addToBin(this.workers.find(worker => worker.id === workerId)!)
     this.workers =  this.workers.filter(worker => worker.id !== workerId);
     this.addressService.deleteAddress(workerId);
@@ -127,7 +127,7 @@ export class WorkerService {
     console.log(this.workers)
   }
 
-  getFullName(idWorker : number) : string{
+  getFullName(idWorker : string) : string{
     var workerSearched : Worker
     workerSearched = this.workers.find(worker => worker.id === idWorker)!
     return workerSearched.name + " " + workerSearched.firstName + " " + workerSearched.lastName
