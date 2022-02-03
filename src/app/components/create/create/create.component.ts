@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ActivatedRoute, Router } from '@angular/router';
+import { State } from 'src/app/models/state';
 import { BinService } from 'src/app/services/bin/bin.service';
+import { DateService } from 'src/app/services/date/date.service';
 import { WorkerService } from 'src/app/services/worker/worker.service';
 import { Worker } from '../../../models/worker';
 
@@ -23,15 +25,15 @@ export class CreateComponent implements OnInit {
   momentDate = new Date()
 
   states = [
-    {value: 0, text: "Alta"},
-    {value: 1, text: "Baja"},
-    {value: 2, text: "En Trámite"}
+    {value: "Working", text: "Alta"},
+    {value: "Down", text: "Baja"},
+    {value: "InProcess", text: "En Trámite"}
   ];
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private workerService : WorkerService,
-              private activatedRoute : ActivatedRoute,
+              private dateService : DateService,
               private binService : BinService) { }
 
   ngOnInit(): void {
@@ -53,8 +55,9 @@ export class CreateComponent implements OnInit {
       lastName: '',
       dni: '',
       bornDate: this.momentDate,
+      bornDateString: '',
       nationality: '',
-      state : 0
+      state : State.Working
     };
 
     this.canCreate = false;
@@ -108,8 +111,8 @@ export class CreateComponent implements OnInit {
   createWorker(){
     var id = this.workerService.workers.length + this.binService.getBinLength() + 1
     this,this.newWorker.id = id.toString()
+    this.newWorker.bornDateString = this.dateService.getDate(this.newWorker.bornDate)
     this.workerService.addWorkers(this.newWorker)
-    this.ngOnInit()
   }
   
   goBack(){
