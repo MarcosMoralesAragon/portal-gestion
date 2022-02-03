@@ -26,6 +26,7 @@ import { BinService } from 'src/app/services/bin/bin.service';
 export class ListComponent implements OnInit {
 
   workers: Worker[] = [];
+  date : Date = new Date()
 
   displayedColumns: string[] = ['id', 'fullName', 'nationality', 'dni', 'bornDate', 'state', 'delete', 'edit', 'contract', 'address'];
   dataSource = new MatTableDataSource<Worker>(this.workers);
@@ -165,11 +166,18 @@ export class ListComponent implements OnInit {
 
   refreshButton(){
     this.ngOnInit()
+    this.ngAfterViewInit()
     this.showSnackBar("refresh", "¡Refrescado con éxito!")
   }
 
   getWorkers(): void{
     this.workerService.getWorkers()
-                      .subscribe(worker => this.workers = worker);
+                      .subscribe(worker =>{
+                        console.log(worker);
+                        return this.workers = worker});
+    this.workers.forEach(worker => {
+      var bornDateStringSplit = worker.bornDateString.split('/')
+      worker.bornDate = new Date( parseInt(bornDateStringSplit[2]), parseInt(bornDateStringSplit[1]) - 1, parseInt(bornDateStringSplit[0]))
+    })
   }
 }

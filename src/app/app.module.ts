@@ -33,6 +33,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatBadgeModule} from '@angular/material/badge';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatPaginatorModule,
     MatSortModule,
     MatExpansionModule,
-    MatBadgeModule
+    MatBadgeModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

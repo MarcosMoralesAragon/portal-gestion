@@ -4,104 +4,27 @@ import { State } from 'src/app/models/state';
 import { Worker } from '../../models/worker';
 import { AddressService } from '../address/address.service';
 import { BinService } from '../bin/bin.service';
+import {HttpClient} from '@angular/common/http';
+
+const url = 'http://localhost:8080/workers'
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkerService {
-
-  workers:Worker[] = [
-    {
-    id: "1",
-    name: "Marcos",
-    dni: "12345678A",
-    firstName: "Morales",
-    lastName: "Aragón",
-    nationality: "Española",
-    state : State.Working,
-    bornDate: new Date()
-  },{
-    id: "2",
-    name: "Sergio",
-    dni: "12345678B",
-    firstName: "García",
-    lastName: "Nose",
-    nationality: "Española",
-    state : State.Working,
-    bornDate: new Date()
-  },{
-    id: "3",
-    name: "Noel",
-    dni: "12345678Q",
-    firstName: "Millan",
-    lastName: "Rebollo",
-    nationality: "Australiana",
-    state : State.Working,
-    bornDate: new Date()
-  },{
-    id: "4",
-    name: "Ander",
-    dni: "12345678Q",
-    firstName: "García",
-    lastName: "Brisquet",
-    nationality: "Venezolano",
-    state : State.Working,
-    bornDate: new Date()
-  },{
-    id: "5",
-    name: "Eustaqui",
-    dni: "12345678U",
-    firstName: "Habichuela",
-    lastName: "Panyagua",
-    nationality: "Australiana",
-    state : State.Working,
-    bornDate: new Date()
-  },{
-    id: "6",
-    name: "Javier",
-    dni: "12345678I",
-    firstName: "Rodrigez",
-    lastName: "Miura",
-    nationality: "Australiana",
-    state : State.Working,
-    bornDate: new Date()
-  },{
-    id: "7",
-    name: "Manuel",
-    dni: "12345678S",
-    firstName: "Millon",
-    lastName: "Pérez",
-    nationality: "Aleman",
-    state : State.Working,
-    bornDate: new Date()
-  },{
-    id: "8",
-    name: "Fernando Ivan",
-    dni: "12345678F",
-    firstName: "Sevilla",
-    lastName: "García",
-    nationality: "Asiatico",
-    state : State.Working,
-    bornDate: new Date()
-  },{
-    id: "9",
-    name: "Gonzalo",
-    dni: "12345678J",
-    firstName: "Salmeron",
-    lastName: "Molilla",
-    nationality: "Colombiano",
-    state : State.Working,
-    bornDate: new Date()
-  }]
+  workers:Worker[] = []
+  prueba:any
 
   constructor(public addressService : AddressService,
-              public binService : BinService) { }
+              public binService : BinService,
+              public http : HttpClient) { 
+              }
 
-  getWorkers() : Observable<Worker[]>{
-    for (let i = 0; i < this.workers.length; i++) {
-      this.workers[i].address = this.addressService.getAddressOfWorker(this.workers[i].id)      
-    }
-    return of(this.workers)
+  getWorkers() : Observable<any>{
+    // for (let i = 0; i < this.workers.length; i++) {
+    //   this.workers[i].address = this.addressService.getAddressOfWorker(this.workers[i].id)      
+    // }
+    return this.http.get(url)
   }
 
   deleteWorker(workerId : string){
@@ -115,16 +38,13 @@ export class WorkerService {
     this.workers = this.workers.filter(worker => worker.id !== workerChanged.id)
     this.workers.push(workerChanged)
 
-
     // var index = this.workers.findIndex(worker => worker.id === workerChanged.id)
     // this.workers[index] = workerChanged
     // console.log(this.workers)
   }
 
-  addWorkers(newWorker : Worker){
-    this.workers.push(newWorker)
-    this.workers = this.workers
-    console.log(this.workers)
+  addWorkers(newWorker: Object): Observable<Object>{
+    return this.http.post(url, newWorker)
   }
 
   getFullName(idWorker : string) : string{

@@ -1,5 +1,5 @@
 export enum State {
-    Working,
-    Down,
-    InProcess
+    Working = "Working",
+    Down = "Down",
+    InProcess = "InProcess"
 }

@@ -16,10 +16,10 @@ export class DialogEditComponent implements OnInit {
   dateChanged : boolean = false
 
   states = [
-    {value: 0, text: "Alta"},
-    {value: 1, text: "Baja"},
-    {value: 2, text: "En Trámite"}
-  ]
+    {value: "Working", text: "Alta"},
+    {value: "Down", text: "Baja"},
+    {value: "InProcess", text: "En Trámite"}
+  ];
 
   constructor(public dialogRef: MatDialogRef<DialogEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,

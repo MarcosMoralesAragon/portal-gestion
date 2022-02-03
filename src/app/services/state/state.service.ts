@@ -7,17 +7,17 @@ export class StateService {
 
   constructor() { }
 
-  getStateToString(state : number): string {
+  getStateToString(state : string): string {
     var stateInString : string = ""
     switch (state) {
-      case 0:
+      case "Working":
          stateInString = "Alta"
         break;
-      case 1:
+      case "Down":
         stateInString = "Baja"
         break;
     
-      case 2:
+      case "InProcess":
         stateInString = "En tramite"
         break;
       default:

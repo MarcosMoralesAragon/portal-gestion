@@ -8,13 +8,14 @@ export class DateService {
   constructor() { }
 
   getDate(date: Date) : string{
-    return date.getDate() + " / " + 
-      this.parseMonth(date.getMonth()) + " / " + 
-      date.getFullYear()
+    
+    return (date.getUTCDate() + 1) + " / " + 
+      this.parseMonth(date.getUTCMonth()) + " / " + 
+      date.getUTCFullYear()
   }
 
   parseMonth(month : number) : string{
-    month =+ 1;
+    month ++;
     return month.toString();
   }
 

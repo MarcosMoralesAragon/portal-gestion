@@ -27,7 +27,7 @@
                                 <input matInput placeholder="11111111A" formControlName="dniCtrl" required class="input-formgroup" [(ngModel)]="newWorker.dni">
                             </mat-form-field>
                             <mat-form-field appearance="outline">
-                                <mat-label>Fecha inicio contrato</mat-label>
+                                <mat-label>Fecha de nacimiento</mat-label>
                                 <input matInput [matDatepicker]="picker"
                                        (dateChange)="editDate($event)" disabled>
                                 <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
