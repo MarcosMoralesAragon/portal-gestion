@@ -8,27 +8,7 @@ import { Position } from 'src/app/models/position';
 })
 export class ContractService {
 
-  contract: Contract[] = [
-    {
-      id: "1",
-      dateStartContract: new Date(),
-      idWorkerAsigned: "1",
-      position: Position.Executive,
-      salary: 1100.50,
-      dateEndContract: new Date()
-    },{
-      id: "2",
-      dateStartContract: new Date() ,
-      idWorkerAsigned: "2" ,
-      position: Position.Officer,
-      salary: 1200.30
-    },{
-      id: "3",
-      dateStartContract: new Date() ,
-      idWorkerAsigned: "3",
-      position: Position.Technician ,
-      salary: 1300.90
-    }]
+  contract: Contract[] = []
 
   constructor() { }
 
@@ -58,7 +38,6 @@ export class ContractService {
   }
 
   updateContract(contractChanged : Contract){
-
     this.contract = this.contract.filter(contract => contract.id !== contractChanged.id)
     this.contract.push(contractChanged)
   }

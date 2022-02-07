@@ -8,7 +8,6 @@ export interface Worker{
     lastName: string;
     dni: string
     bornDate: Date;
-    bornDateString:String;
     nationality: string;
     state : State;
     address?: Address

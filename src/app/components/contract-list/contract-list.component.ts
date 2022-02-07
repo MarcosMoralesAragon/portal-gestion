@@ -23,7 +23,6 @@ import { MatSort } from '@angular/material/sort';
 export class ContractListComponent implements OnInit {
 
   contracts : Contract[] = []
-  workerFullName : string = ""
   idWorker! : string | null 
   displayedColumns: string[] = ['id', 'dateStartContract', 'salary', 'position', 'dateEndContract', 'dateEstimatedEndContract', 'delete', 'edit'];
   dataSource = new MatTableDataSource<Contract>(this.contracts);
@@ -44,7 +43,6 @@ export class ContractListComponent implements OnInit {
     this.idWorker = this.activatedRoute.snapshot.paramMap.get('id')
     this.getContracts(this.idWorker!)
     this.dataSource = new MatTableDataSource<Contract>(this.contracts);
-    this.workerFullName = this.workerService.getFullName(this.idWorker!)
     console.log(this.contracts)
   }
 

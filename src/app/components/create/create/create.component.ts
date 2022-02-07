@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { State } from 'src/app/models/state';
 import { BinService } from 'src/app/services/bin/bin.service';
 import { DateService } from 'src/app/services/date/date.service';
@@ -55,7 +55,6 @@ export class CreateComponent implements OnInit {
       lastName: '',
       dni: '',
       bornDate: this.momentDate,
-      bornDateString: '',
       nationality: '',
       state : State.Working
     };
@@ -111,12 +110,10 @@ export class CreateComponent implements OnInit {
   createWorker(){
     var id = this.workerService.workers.length + this.binService.getBinLength() + 1
     this,this.newWorker.id = id.toString()
-    this.newWorker.bornDateString = this.dateService.getDate(this.newWorker.bornDate)
-    this.workerService.addWorkers(this.newWorker)
+    this.workerService.addWorkers(this.newWorker).subscribe()
   }
   
   goBack(){
     this.router.navigateByUrl('/')
   }
-  
 }

@@ -17,6 +17,7 @@ import { AddressService } from 'src/app/services/address/address.service';
 import { DialogEditAddressComponent } from '../dialog/dialog-edit-address/dialog-edit-address.component';
 import { DialogCreateAddressComponent } from '../dialog/dialog-create-address/dialog-create-address.component';
 import { BinService } from 'src/app/services/bin/bin.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -29,7 +30,7 @@ export class ListComponent implements OnInit {
   date : Date = new Date()
 
   displayedColumns: string[] = ['id', 'fullName', 'nationality', 'dni', 'bornDate', 'state', 'delete', 'edit', 'contract', 'address'];
-  dataSource = new MatTableDataSource<Worker>(this.workers);
+  // dataSource = new MatTableDataSource<Worker>(this.workers);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -44,14 +45,18 @@ export class ListComponent implements OnInit {
               public binService : BinService) { }
 
   ngOnInit(): void {
-    this.getWorkers()
-    this.dataSource = new MatTableDataSource<Worker>(this.workers);
-    console.log(this.workers)
+    this.getWorkers().subscribe(worker => {
+      this.workers= worker;
+      // this.dataSource = new MatTableDataSource<Worker>(this.workers); // sync asignar workers a datasource
+      console.log("despues")
+    }); // async http workers
+    console.log("antes")
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort
+    
+//this.dataSource.paginator = this.paginator;
+  //  this.dataSource.sort = this.sort
   }
 
   openDialogDelete(workerId : string) {
@@ -60,11 +65,14 @@ export class ListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       
       if(result == "delete"){
-        this.workerService.deleteWorker(workerId)
-        this.ngOnInit()
-        this.ngAfterViewInit()
-        
-        this.showSnackBar(result, "¡Borrado con éxito!")
+        this.workerService.deleteWorker(this.workers.find(worker => worker.id === workerId)!).subscribe(deleteWorked => {
+          if (deleteWorked) {
+            this.ngOnInit()
+            this.showSnackBar(result, "¡Borrado con éxito!")
+          } else {
+            this.showSnackBarError(result, "Borrado fallido")
+          }
+        })
       } else {
         this.showSnackBarError(result, "Acción cancelada")
       }
@@ -80,11 +88,14 @@ export class ListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result =>{
       if(result?.result == "edit"){
-        this.workerService.updateWorker(result.worker)
-        this.ngOnInit()
-        this.ngAfterViewInit()
-        
-        this.showSnackBar(result.result, "¡Editado con éxito!")
+        this.workerService.updateWorker(result.worker).subscribe(isChanged => {
+          if (isChanged) {
+            this.ngOnInit()        
+            this.showSnackBar(result.result, "¡Editado con éxito!")
+          } else {
+            this.showSnackBarError(result.result, "Editado fallido")
+          }
+        })
       } else {
         this.showSnackBarError(result, "Acción cancelada")
       }
@@ -170,14 +181,12 @@ export class ListComponent implements OnInit {
     this.showSnackBar("refresh", "¡Refrescado con éxito!")
   }
 
-  getWorkers(): void{
-    this.workerService.getWorkers()
-                      .subscribe(worker =>{
-                        console.log(worker);
-                        return this.workers = worker});
-    this.workers.forEach(worker => {
-      var bornDateStringSplit = worker.bornDateString.split('/')
-      worker.bornDate = new Date( parseInt(bornDateStringSplit[2]), parseInt(bornDateStringSplit[1]) - 1, parseInt(bornDateStringSplit[0]))
-    })
+  getWorkers(): Observable<any[]>{
+    return this.workerService.getWorkers()
+                      
+    // this.workers.forEach(worker => {
+    //   var bornDateStringSplit = worker.bornDateString.split('/')
+    //   worker.bornDate = new Date( parseInt(bornDateStringSplit[2]), parseInt(bornDateStringSplit[1]) - 1, parseInt(bornDateStringSplit[0]))
+    // })
   }
 }

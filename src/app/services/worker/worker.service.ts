@@ -27,16 +27,16 @@ export class WorkerService {
     return this.http.get(url)
   }
 
-  deleteWorker(workerId : string){
-    this.binService.addToBin(this.workers.find(worker => worker.id === workerId)!)
-    this.workers =  this.workers.filter(worker => worker.id !== workerId);
-    this.addressService.deleteAddress(workerId);
+  deleteWorker(worker : Worker) : Observable<Object>{
+    this.binService.addToBin(worker)
+    this.addressService.deleteAddress(worker.id);
+    return this.http.delete(`${url}/${worker.id}`)
   }
 
-  updateWorker(workerChanged : Worker){
+  updateWorker(workerChanged : Worker) : Observable<Object>{
 
-    this.workers = this.workers.filter(worker => worker.id !== workerChanged.id)
-    this.workers.push(workerChanged)
+    console.log("Sup")
+    return this.http.put(`${url}/${workerChanged.id}`,workerChanged)
 
     // var index = this.workers.findIndex(worker => worker.id === workerChanged.id)
     // this.workers[index] = workerChanged
