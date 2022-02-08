@@ -3,6 +3,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { empty } from 'rxjs';
 import { Contract } from 'src/app/models/contract';
+import { Position } from 'src/app/models/position';
 import { ContractService } from 'src/app/services/contract/contract.service';
 import { DateService } from 'src/app/services/date/date.service';
 
@@ -19,10 +20,10 @@ export class DialogCreateContractComponent implements OnInit {
   dateEstimatedEndNeeded: boolean = false
   momentDate = new Date()
   positions = [
-    {value: 0, text: "Directivo"},
-    {value: 1, text: "Oficial"},
-    {value: 2, text: "Operario"},
-    {value: 3, text: "Tecnico"}
+    {value: "Executive", text: "Directivo"},
+    {value: "Officer", text: "Oficial"},
+    {value: "Worker", text: "Operario"},
+    {value: "Technician", text: "Tecnico"}
   ]
 
   constructor(public dialogRef: MatDialogRef<DialogCreateContractComponent>,
@@ -33,14 +34,17 @@ export class DialogCreateContractComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    var newId = this.contractService.getContractsLenght() + 1
     this.contractCreating = {
-      id: newId.toString(),
-      dateStartContract: this.momentDate,
+      id: "1",
+      dateStartContract: new Date(),
       salary: 950,
-      position: 3,
-      idWorkerAsigned: this.idWorker
+      position: Position.Worker,
+      idWorkerAsigned: this.idWorker,
+      dateEndContract : null,
+      dateEstimatedEndContract: null
     }
+    console.log(this.idWorker)
+    console.log(this.contractCreating)
   }
 
   editDate(dateWhoChanged : string , event: MatDatepickerInputEvent<Date>){
@@ -74,6 +78,7 @@ export class DialogCreateContractComponent implements OnInit {
     this.dialogRef.close("cancel")
   }
   create(){
+    console.log(this.contractCreating)
     this.dialogRef.close({
       result : "create",
       contract: this.contractCreating

@@ -6,7 +6,7 @@
             <input matInput [matDatepicker]="picker"
                    (dateChange)="editDate( 'start', $event)" disabled>
             <p *ngIf="!dateStartChanged">
-                {{dateService.getDate(contractEditing.dateStartContract)}}
+                {{contractEditing.dateStartContract | date : 'dd/MM/yyyy'}}
             </p>
             <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
             <mat-datepicker #picker disabled="false"></mat-datepicker>
@@ -22,7 +22,7 @@
                 <input matInput [matDatepicker]="picker"
                    (dateChange)="editDate('end' , $event)" disabled>
                 <p *ngIf="!dateEndChanged">
-                    {{dateService.getDate(contractEditing.dateEndContract!)}}
+                    {{contractEditing.dateEndContract! | date : 'dd/MM/yyyy'}}
                </p>
             <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
             <mat-datepicker #picker disabled="false"></mat-datepicker>
@@ -45,7 +45,7 @@
                 <input matInput [matDatepicker]="picker"
                    (dateChange)="editDate('estimatedEnd' , $event)" disabled>
                 <p *ngIf="!dateEstimatedEndChanged">
-                    {{dateService.getDate(contractEditing.dateEstimatedEndContract!)}}
+                    {{contractEditing.dateEstimatedEndContract! | date : 'dd/MM/yyyy'}}
                </p>
             <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
             <mat-datepicker #picker disabled="false"></mat-datepicker>

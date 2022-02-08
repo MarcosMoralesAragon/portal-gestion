@@ -1,44 +1,37 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Contract } from 'src/app/models/contract';
-import { Position } from 'src/app/models/position';
+
+const url = 'http://localhost:8080/contract'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContractService {
 
-  contract: Contract[] = []
+  constructor(public http : HttpClient) { }
 
-  constructor() { }
-
-  deleteContract(contractId : string){
-    this.contract =  this.contract.filter(contract => contract.id !== contractId);
-    console.log(this.contract)
+  getContractsOfWorker(idWorker : string) : Observable<any>{
+    return this.http.get(`${url}s/${idWorker}`)
   }
 
-  getContracts() : Observable<Contract[]>{
-    return of(this.contract)
+  deleteContract(contractId : string) : Observable<any>{
+    return this.http.delete(`${url}/${contractId}`)
   }
 
-  getContractsOfWorker(idWorker : string){
-    return of(this.contract.filter(contract => contract.idWorkerAsigned === idWorker))
+  getContract(idContract : string) : Observable<any>{
+    return this.http.get(`${url}/${idContract}`)
   }
 
-  getContract(idContract : string){
-    return this.contract.find(contract => contract.id === idContract)
+  addContract(newContract : Contract) : Observable<any>{
+    console.log(newContract)
+    return this.http.post(url, newContract)
   }
 
-  addContract(newContract : Contract){
-    this.contract.push(newContract)
-  }
-
-  getContractsLenght() : number {
-    return this.contract.length
-  }
-
-  updateContract(contractChanged : Contract){
-    this.contract = this.contract.filter(contract => contract.id !== contractChanged.id)
-    this.contract.push(contractChanged)
+  updateContract(contractChanged : Contract) : Observable<any> {
+    console.log("hola")
+    console.log(contractChanged.id)
+    return this.http.put(url, contractChanged)
   }
 }

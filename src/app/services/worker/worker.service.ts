@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { State } from 'src/app/models/state';
 import { Worker } from '../../models/worker';
 import { AddressService } from '../address/address.service';
 import { BinService } from '../bin/bin.service';
@@ -13,17 +12,13 @@ const url = 'http://localhost:8080/workers'
 })
 export class WorkerService {
   workers:Worker[] = []
-  prueba:any
-
+  
   constructor(public addressService : AddressService,
               public binService : BinService,
               public http : HttpClient) { 
               }
 
   getWorkers() : Observable<any>{
-    // for (let i = 0; i < this.workers.length; i++) {
-    //   this.workers[i].address = this.addressService.getAddressOfWorker(this.workers[i].id)      
-    // }
     return this.http.get(url)
   }
 
@@ -34,13 +29,8 @@ export class WorkerService {
   }
 
   updateWorker(workerChanged : Worker) : Observable<Object>{
-
-    console.log("Sup")
-    return this.http.put(`${url}/${workerChanged.id}`,workerChanged)
-
-    // var index = this.workers.findIndex(worker => worker.id === workerChanged.id)
-    // this.workers[index] = workerChanged
-    // console.log(this.workers)
+    console.log("Edita")
+    return this.http.put(url ,workerChanged)
   }
 
   addWorkers(newWorker: Object): Observable<Object>{

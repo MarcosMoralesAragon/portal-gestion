@@ -1,6 +1,6 @@
 export enum Position {
-    Executive,
-    Officer,
-    Worker,
-    Technician
+    Executive = "Executive",
+    Officer = "Officer",
+    Worker = "Worker",
+    Technician = "Technician"
 }

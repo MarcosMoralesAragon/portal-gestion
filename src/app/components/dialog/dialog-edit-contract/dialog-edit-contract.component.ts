@@ -29,10 +29,13 @@ export class DialogEditContractComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<DialogCreateContractComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               public contractService : ContractService,
-              public dateService : DateService) { }
+              public dateService : DateService) {
+                console.log(data)
+                this.contractEditing = this.data
+                console.log(this.contractEditing)
+              }
 
   ngOnInit(): void {
-    this.contractEditing = this.data
     if (this.contractEditing.dateEndContract != undefined) {
         this.dateEndExists = true
     }
@@ -58,7 +61,6 @@ export class DialogEditContractComponent implements OnInit {
       default:
         break;
     }
-    console.log(this.contractEditing)
   }
 
   createEndContractDate(){
