@@ -1,35 +1,37 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Worker } from '../../models/worker';
-import { WorkerService } from '../worker/worker.service';
+
+const url = 'http://localhost:8080/bin'
 
 @Injectable({
   providedIn: 'root'
 })
 export class BinService {
+  constructor(private http : HttpClient) { }
 
-  bin : Worker[] = []
-
-  constructor() { }
-
-  getBin() : Observable<Worker[]>{
-    return of (this.bin)
+  getBin() : Observable<any>{
+    return this.http.get(url);
   }
 
-  addToBin(workerDeleted : Worker){
-    this.bin.push(workerDeleted)
-    this.bin = this.bin
+  addToBin(workerDeleted : Worker) : Observable<any>{
+    return this.http.post(`${url}-add`, workerDeleted);
   }
 
-  deleteFromBin(workerId : string){
-    this.bin = this.bin.filter(worker => worker.id !== workerId)
+  deleteFromBin(workerId : string) : Observable<any>{
+    return this.http.delete(`${url}-delete/${workerId}`)
   }
 
-  deleteAllBin(){
-    this.bin = []
+  deleteAllBin(): Observable<any>{
+    return this.http.delete(`${url}-deleteAll`)
   }
 
-  getBinLength() : number{
-    return this.bin.length
+  restore(workerId : string) : Observable<any>{
+    return this.http.delete(`${url}-restore/${workerId}`)
+  }
+
+  restoreAll() : Observable<any>{
+    return this.http.delete(`${url}-restoreAll`)
   }
 }
