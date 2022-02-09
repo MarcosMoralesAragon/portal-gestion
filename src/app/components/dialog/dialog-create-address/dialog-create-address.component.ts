@@ -18,7 +18,7 @@ export class DialogCreateAddressComponent implements OnInit {
               public addressServices : AddressService) { }
 
   ngOnInit(): void {
-    var idNewAddress = this.addressServices.getAddressLenght() + 1
+    var idNewAddress = "1"
     this.addressCreating = {
       id: idNewAddress.toString(),
       street: "",

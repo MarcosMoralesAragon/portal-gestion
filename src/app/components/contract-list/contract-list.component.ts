@@ -40,6 +40,7 @@ export class ContractListComponent implements OnInit {
     this.idWorker = this.activatedRoute.snapshot.paramMap.get('id')
     this.getContracts(this.idWorker!).subscribe(contract => {
       this.contracts = contract
+      console.log(this.contracts)
     })
   }
 
@@ -57,6 +58,7 @@ export class ContractListComponent implements OnInit {
         this.contractService.deleteContract(contractId).subscribe(isDeleted => {
           if(isDeleted){
             this.ngOnInit()
+            console.log("llegue aqui")
             this.ngAfterViewInit()
             this.showSnackBar(result, "¡Borrado con éxito!")
           } else {
@@ -80,6 +82,7 @@ export class ContractListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
 
       if(result?.result == "create"){
+        console.log(result.contract)
         this.contractService.addContract(result.contract).subscribe(isAdded => {
           this.ngOnInit()
           this.ngAfterViewInit()
@@ -161,7 +164,6 @@ export class ContractListComponent implements OnInit {
   }
 
   getContracts(idWorker : string): Observable<any>{
-    console.log(this.idWorker)
     return this.contractService.getContractsOfWorker(idWorker)
   }
   

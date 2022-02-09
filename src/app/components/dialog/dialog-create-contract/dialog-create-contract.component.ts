@@ -79,6 +79,8 @@ export class DialogCreateContractComponent implements OnInit {
   }
   create(){
     console.log(this.contractCreating)
+    console.log(this.idWorker)
+    this.contractCreating.idWorkerAsigned = this.idWorker;
     this.dialogRef.close({
       result : "create",
       contract: this.contractCreating

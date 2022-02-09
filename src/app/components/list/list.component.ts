@@ -30,7 +30,7 @@ export class ListComponent implements OnInit {
   date : Date = new Date()
 
   displayedColumns: string[] = ['id', 'fullName', 'nationality', 'dni', 'bornDate', 'state', 'delete', 'edit', 'contract', 'address'];
-  // dataSource = new MatTableDataSource<Worker>(this.workers);
+  dataSource = new MatTableDataSource<Worker>(this.workers);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -47,16 +47,10 @@ export class ListComponent implements OnInit {
   ngOnInit(): void {
     this.getWorkers().subscribe(worker => {
       this.workers= worker;
-      // this.dataSource = new MatTableDataSource<Worker>(this.workers); // sync asignar workers a datasource
-      console.log("despues")
-    }); // async http workers
-    console.log("antes")
-  }
-
-  ngAfterViewInit() {
-    
-//this.dataSource.paginator = this.paginator;
-  //  this.dataSource.sort = this.sort
+      this.dataSource = new MatTableDataSource<Worker>(this.workers);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort
+    });
   }
 
   openDialogDelete(workerId : string) {
@@ -108,11 +102,14 @@ export class ListComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(result =>{
       if(result?.result == "edit"){
-        this.addressService.updateAddress(result.data)
-        this.ngOnInit()
-        this.ngAfterViewInit()
-        
-        this.showSnackBar(result.result, "¡Editado con éxito!")
+        this.addressService.updateAddress(result.data).subscribe(isEdited => {
+          if(isEdited){
+            this.ngOnInit()
+            this.showSnackBar(result.result, "¡Editado con éxito!")
+          } else {
+            this.showSnackBarError(result, "Algo salio mal")
+          }
+        })
       } else {
         this.showSnackBarError(result, "Acción cancelada")
       }
@@ -125,11 +122,14 @@ export class ListComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(result =>{
       if(result?.result == "create"){
-        this.addressService.addAddress(result.data)
-        this.ngOnInit()
-        this.ngAfterViewInit()
-        
-        this.showSnackBar(result.result, "¡Editado con éxito!")
+        this.addressService.addAddress(result.data).subscribe(isCreated => {
+          if(isCreated){
+            this.ngOnInit()        
+            this.showSnackBar(result.result, "¡Creado con éxito!")
+          }else{
+            this.showSnackBarError(result, "Algo salio mal ")
+          }
+        })
       } else {
         this.showSnackBarError(result, "Acción cancelada")
       }
@@ -177,7 +177,6 @@ export class ListComponent implements OnInit {
 
   refreshButton(){
     this.ngOnInit()
-    this.ngAfterViewInit()
     this.showSnackBar("refresh", "¡Refrescado con éxito!")
   }
 

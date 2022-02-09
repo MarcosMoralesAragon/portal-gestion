@@ -25,7 +25,6 @@ export class ContractService {
   }
 
   addContract(newContract : Contract) : Observable<any>{
-    console.log(newContract)
     return this.http.post(url, newContract)
   }
 

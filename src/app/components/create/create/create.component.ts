@@ -108,8 +108,6 @@ export class CreateComponent implements OnInit {
   }
 
   createWorker(){
-    var id = this.workerService.workers.length + this.binService.getBinLength() + 1
-    this,this.newWorker.id = id.toString()
     console.log(this.newWorker)
     this.workerService.addWorkers(this.newWorker).subscribe()
   }

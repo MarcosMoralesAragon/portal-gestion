@@ -24,7 +24,6 @@ export class WorkerService {
 
   deleteWorker(worker : Worker) : Observable<Object>{
     this.binService.addToBin(worker)
-    this.addressService.deleteAddress(worker.id);
     return this.http.delete(`${url}/${worker.id}`)
   }
 
