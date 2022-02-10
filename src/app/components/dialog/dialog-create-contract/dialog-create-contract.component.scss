@@ -1,28 +1,18 @@
-.grid-inputs{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    align-items: center;
-    justify-items: center;
-    height: 310px;
+.flex-inputs{
+    width: 350px;
 }
-.flex-lastInput{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.inputs{
+    width: 100%;
+}
+.buttons-display{
+    margin-bottom: 5px;
+}
+
+h2{
+    text-align: center;
 }
 .flex-buttons{
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    margin: 5px;
-}
-.button-end{
-    margin: 4px;
-}
-.button-addDate{
-    margin-bottom: 1.34375em;
-}
-h2{
-    text-align: center;
+    margin-top: 15px;
 }

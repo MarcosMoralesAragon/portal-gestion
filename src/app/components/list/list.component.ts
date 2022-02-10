@@ -59,13 +59,15 @@ export class ListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       
       if(result == "delete"){
-        this.workerService.deleteWorker(this.workers.find(worker => worker.id === workerId)!).subscribe(deleteWorked => {
-          if (deleteWorked) {
-            this.ngOnInit()
-            this.showSnackBar(result, "¡Borrado con éxito!")
-          } else {
-            this.showSnackBarError(result, "Borrado fallido")
-          }
+        this.binService.addToBin(this.workers.find(worker => worker.id === workerId)!).subscribe(addedToBin => {
+          this.workerService.deleteWorker(this.workers.find(worker => worker.id === workerId)!).subscribe(deleteWorked => {
+            if (deleteWorked) {
+              this.ngOnInit()
+              this.showSnackBar(result, "¡Borrado con éxito!")
+            } else {
+              this.showSnackBarError(result, "Borrado fallido")
+            }
+          })
         })
       } else {
         this.showSnackBarError(result, "Acción cancelada")

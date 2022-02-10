@@ -41,11 +41,4 @@ export class WorkerService {
     workerSearched = this.workers.find(worker => worker.id === idWorker)!
     return workerSearched.name + " " + workerSearched.firstName + " " + workerSearched.lastName
   }
-
-  restoreAllBin(workerList : Worker[]){
-    for (let i = 0; i < workerList.length; i++) {
-      this.addWorkers(workerList[i])
-    }
-  }
-
 }

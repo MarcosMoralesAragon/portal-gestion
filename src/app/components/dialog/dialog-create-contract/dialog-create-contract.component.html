@@ -1,20 +1,22 @@
 <h2>Crear contrato</h2>
-<div class="grid-inputs">
-    <p>
-        <mat-form-field appearance="outline">
+<div fxLayout = "column" fxLayoutAlign = "center center">
+    <div class="flex-inputs">
+        <mat-form-field appearance="outline" class="inputs">
             <mat-label>Fecha inicio contrato</mat-label>
             <input matInput [matDatepicker]="picker"
                    (dateChange)="editDate( 'start', $event)" disabled>
             <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
             <mat-datepicker #picker disabled="false"></mat-datepicker>
           </mat-form-field>
-    </p>
-    <p>
-        <button *ngIf="!dateEndNeeded" mat-raised-button color="accent" (click)="createEndContractDate()" class="button-addDate">
-            Añadir fecha final de contrato <mat-icon>add</mat-icon>
-        </button>
+    </div>
+    <div class="flex-inputs">
+        <div class="buttons-display">
+            <button style="width: 100%;" *ngIf="!dateEndNeeded" mat-raised-button color="accent" (click)="createEndContractDate()" class="button-addDate">
+                Añadir fecha final de contrato <mat-icon>add</mat-icon>
+            </button>
+        </div>
         <ng-container *ngIf="dateEndNeeded">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="inputs">
                 <mat-label>Fecha final contrato</mat-label>
                 <input matInput [matDatepicker]="picker"
                    (dateChange)="editDate('end' , $event)" disabled>
@@ -22,19 +24,21 @@
             <mat-datepicker #picker disabled="false"></mat-datepicker>
             </mat-form-field>
         </ng-container>
-    </p>
-    <p>
-        <mat-form-field appearance="outline" color="accent">
+    </div>
+    <div class="flex-inputs">
+        <mat-form-field appearance="outline" class="inputs" color="accent">
             <mat-label>Salario</mat-label>
             <input matInput [(ngModel)]="contractCreating.salary">
-        </mat-form-field>
-    </p>
-    <p>
-        <button *ngIf="!dateEstimatedEndNeeded" mat-raised-button color="accent" (click)="createEstimatedEndContractDate()" class="button-addDate">
-            Añadir fecha final estimada del contrato <mat-icon>add</mat-icon>
-        </button>
+        </mat-form-field> 
+    </div>
+    <div class="flex-inputs">
+        <div class="buttons-display">
+            <button style="width: 100%;"  *ngIf="!dateEstimatedEndNeeded" mat-raised-button color="accent" (click)="createEstimatedEndContractDate()" class="button-addDate">
+                Añadir fecha final estimada del contrato <mat-icon>add</mat-icon>
+            </button>
+        </div>
         <ng-container *ngIf="dateEstimatedEndNeeded">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="inputs">
                 <mat-label>Fecha final estimada del contrato</mat-label>
                 <input matInput [matDatepicker]="picker"
                    (dateChange)="editDate('estimatedEnd' , $event)" disabled>
@@ -42,11 +46,9 @@
             <mat-datepicker #picker disabled="false"></mat-datepicker>
             </mat-form-field>
         </ng-container>
-    </p>
-</div>
-<div class="flex-lastInput">
-    <p>
-        <mat-form-field appearance="fill" color="accent">
+    </div>
+    <div class="flex-inputs">
+        <mat-form-field appearance="fill" color="accent" class="inputs">
             <mat-label>Puesto</mat-label>
             <mat-select [(value)]="contractCreating.position">
               <mat-option *ngFor="let position of positions" [value]="position.value">
@@ -54,9 +56,9 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-    </p>
+    </div>
 </div>
 <div class="flex-buttons">
-    <button mat-raised-button color="warn" (click)="cancel()" class="button-end">Cancelar <mat-icon>cancel</mat-icon> </button>
-    <button mat-raised-button color="accent" (click)="create()" class="button-end">Crear contrato <mat-icon>add</mat-icon> </button>
+    <button style="width: 170px; margin: 5px;" mat-raised-button color="warn" (click)="cancel()" class="button-end">Cancelar <mat-icon>cancel</mat-icon> </button>
+    <button style="width: 170px; margin: 5px;" mat-raised-button color="accent" (click)="create()" class="button-end">Crear contrato <mat-icon>add</mat-icon> </button>
 </div>
