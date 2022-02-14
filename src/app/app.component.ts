@@ -17,7 +17,7 @@ export class AppComponent {
   constructor(private router:Router,
               private http:HttpClient,
               private _snackBar: MatSnackBar){}
-
+  
   onFileSelected(event : any) {
 
     const file:File = event.target.files[0];
@@ -26,6 +26,7 @@ export class AppComponent {
         this.fileName = file.name;
         console.log(this.fileName)
         this.showSnackBar("updateFile", "Archivo (" + this.fileName +  ") subido correctamente")
+
         // const formData = new FormData();
         // formData.append("thumbnail", file);
         // const upload$ = this.http.post("/api/thumbnail-upload", formData);
@@ -61,6 +62,7 @@ export class AppComponent {
       } 
     })
   }
+
 
   goToList(){
     this.router.navigateByUrl('/')
