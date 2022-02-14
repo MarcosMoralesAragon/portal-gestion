@@ -13,6 +13,7 @@ import { DialogEditContractComponent } from '../dialog/dialog-edit-contract/dial
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-contract-list',
@@ -24,6 +25,7 @@ export class ContractListComponent implements OnInit {
   contracts : Contract[] = []
   idWorker! : string | null 
   displayedColumns: string[] = ['id', 'dateStartContract', 'salary', 'position', 'dateEndContract', 'dateEstimatedEndContract', 'delete', 'edit'];
+  dataSource = new MatTableDataSource<Contract>(this.contracts);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -41,12 +43,10 @@ export class ContractListComponent implements OnInit {
     this.getContracts(this.idWorker!).subscribe(contract => {
       this.contracts = contract
       console.log(this.contracts)
+      this.dataSource = new MatTableDataSource<Contract>(this.contracts);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort
     })
-  }
-
-  ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort
   }
 
   openDialogDelete(contractId : string) {
@@ -58,8 +58,6 @@ export class ContractListComponent implements OnInit {
         this.contractService.deleteContract(contractId).subscribe(isDeleted => {
           if(isDeleted){
             this.ngOnInit()
-            console.log("llegue aqui")
-            this.ngAfterViewInit()
             this.showSnackBar(result, "¡Borrado con éxito!")
           } else {
             this.showSnackBarError(result, "Algo salio mal")
@@ -85,7 +83,6 @@ export class ContractListComponent implements OnInit {
         console.log(result.contract)
         this.contractService.addContract(result.contract).subscribe(isAdded => {
           this.ngOnInit()
-          this.ngAfterViewInit()
           this.showSnackBar(result.result, "¡Contrato creado con exito!")
         })
       } else {
@@ -110,7 +107,6 @@ export class ContractListComponent implements OnInit {
           this.contractService.updateContract(result.contract).subscribe(isUpdated => {
             if(isUpdated){
               this.ngOnInit()
-              this.ngAfterViewInit()
               this.showSnackBar(result.result, "¡Contrato editado!")
             }else{
               this.showSnackBarError(result, "Algo salio mal")

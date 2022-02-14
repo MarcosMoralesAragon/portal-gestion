@@ -6,7 +6,7 @@
   <button mat-raised-button color="primary" class="flex-buttons-start__button" (click)="goBack()"> <mat-icon>reply</mat-icon> Volver</button>
 </div>
 <div class="table-and-paginator">
-  <table mat-table [dataSource]="contracts" matSort class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef class="table-header" mat-sort-header> ID </th>
