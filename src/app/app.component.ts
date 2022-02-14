@@ -25,12 +25,16 @@ export class AppComponent {
     if (file) {
         this.fileName = file.name;
         console.log(this.fileName)
-        this.showSnackBar("updateFile", "Archivo (" + this.fileName +  ") subido correctamente")
-
-        // const formData = new FormData();
-        // formData.append("thumbnail", file);
-        // const upload$ = this.http.post("/api/thumbnail-upload", formData);
-        // upload$.subscribe();
+        console.log(this.getFormatFile(this.fileName))
+        if(this.getFormatFile(this.fileName) == "xlsx"){
+          // const formData = new FormData();
+          // formData.append("thumbnail", file);
+          // const upload$ = this.http.post("/api/thumbnail-upload", formData);
+          // upload$.subscribe();
+          this.showSnackBar("updateFile", "Archivo (" + this.fileName +  ") subido correctamente")
+        } else {
+          this.showSnackBarError("updateFile", "Formato del archivo erroneo")
+        }
     } else {
       this.showSnackBarError("updateFile", "Subida de archivo cancelada")
     }
@@ -63,6 +67,10 @@ export class AppComponent {
     })
   }
 
+  getFormatFile(file : string) : string{
+    var stringLength = file.length
+    return file.charAt(stringLength - 4) + file.charAt(stringLength - 3) + file.charAt(stringLength - 2) + file.charAt(stringLength - 1)
+  }
 
   goToList(){
     this.router.navigateByUrl('/')
