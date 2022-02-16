@@ -6,26 +6,43 @@
         <mat-card-title>Crear empleado</mat-card-title>
         <div class="steps-worker">
             <mat-stepper [linear]="false" #stepper>
+
+                <!-- PRIMER GRUPO -->
+
                 <mat-step [stepControl]="firstFormGroupWorker">
                     <form [formGroup]="firstFormGroupWorker">
                         <ng-template matStepLabel>Datos personales</ng-template>
                         <div class="flex-formfield">
+
+                            <!-- CAMPO NOMBRE -->
+
                             <mat-form-field appearance="outline" color="accent">
                                 <mat-label>Nombre</mat-label>
                                 <input matInput  formControlName="nameCtrl" required class="input-formgroup" [(ngModel)]="newWorker.name">
                             </mat-form-field>
+
+                            <!-- CAMPO PRIMER APELLIDO -->
+
                             <mat-form-field appearance="outline" color="accent">
                                 <mat-label>Primer apellido</mat-label>
                                 <input matInput  formControlName="firstNameCtrl" required class="input-formgroup" [(ngModel)]="newWorker.firstName">
                             </mat-form-field>
+                            
+                            <!-- CAMPO SEGUNDO APELLIDO -->
+
                             <mat-form-field appearance="outline" color="accent">
                                 <mat-label>Segundo apellido</mat-label>
                                 <input matInput  formControlName="lastNameCtrl" required class="input-formgroup" [(ngModel)]="newWorker.lastName">
                             </mat-form-field>
+                            
+                            <!-- CAMPO DNI -->
+                            
                             <mat-form-field appearance="outline" color="accent">
                                 <mat-label>DNI</mat-label>
                                 <input matInput placeholder="11111111A" formControlName="dniCtrl" required class="input-formgroup" [(ngModel)]="newWorker.dni">
                             </mat-form-field>
+                            
+                            <!-- CAMPO FECHA DE NACIMIENTO -->
                             <mat-form-field appearance="outline">
                                 <mat-label>Fecha de nacimiento</mat-label>
                                 <input matInput [matDatepicker]="picker"
@@ -33,21 +50,31 @@
                                 <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
                                 <mat-datepicker #picker disabled="false"></mat-datepicker>
                             </mat-form-field>
+
                         </div>
-                        
+                        <!-- BOTONES -->
                         <div>
                             <p>{{checkAllInputsGroup1AreFiled()}}</p>
                             <button mat-button matStepperNext *ngIf="canFollowStep2">Siguiente</button>
                         </div>
                     </form>
+
                 </mat-step>
+
+                <!-- SEGUNDO GRUPO -->
                 <mat-step [stepControl]="secondFormGroupWorker" label="Extras">
                   <form [formGroup]="secondFormGroupWorker">
                     <div class="flex-formfield">
+
+                        <!-- NACIONALIDAD -->
+
                         <mat-form-field appearance="outline" color="accent">
                             <mat-label>Nacionalidad</mat-label>
                             <input matInput  formControlName="nationalityCtrl" required class="input-formgroup" color="accent" [(ngModel)]="newWorker.nationality">
                         </mat-form-field>
+
+                        <!-- ESTADO -->
+
                         <mat-form-field appearance="outline" color="accent">
                             <mat-label>Estado</mat-label>
                             <mat-select [(value)]="newWorker.state">
@@ -55,15 +82,20 @@
                                 {{state.text}}
                               </mat-option>
                             </mat-select>
-                          </mat-form-field>
+                        </mat-form-field>
                     </div>
+                    <!-- BOTONES -->
                     <div>
                       <button mat-button matStepperPrevious>Atrás</button>
                       <p>{{canCreateWorker()}}</p>
                       <button mat-button matStepperNext (click)="createWorker()" *ngIf="canCreate">Crear empleado</button>
                     </div>
                   </form>
+
                 </mat-step>
+
+                <!-- TERCER GRUPO -->
+
                 <mat-step>
                   <ng-template matStepLabel>Finalización</ng-template>
                   <p>¡Empleado creado con éxito!</p>

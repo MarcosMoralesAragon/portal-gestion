@@ -84,6 +84,7 @@ export class AppComponent {
       } else {
         this.showSnackBarError("updateFile", "Formato de archivo no admitido. Tiene que ser xlsx")
       }
+
     } else {
       this.showSnackBarError("updateFile", "Subida de archivo cancelada")
     }
@@ -116,8 +117,10 @@ export class AppComponent {
     })
   }
 
+
   getFileExtension(fileName : string) : string{
     return fileName.split('.')[1]
+
   }
 
   goToList(){
