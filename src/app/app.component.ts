@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { FileService } from './services/file/file.service';
 import * as XLSX from 'xlsx';
+import { WorkerService } from './services/worker/worker.service';
+import { ContractService } from './services/contract/contract.service';
+import { AddressService } from './services/address/address.service';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +19,10 @@ export class AppComponent {
   title = 'portal-gestion';
 
   constructor(private router:Router,
-              private http:HttpClient,
               private _snackBar: MatSnackBar,
-              private fileService : FileService){}
+              private workerService : WorkerService,
+              private contractService : ContractService,
+              private addressService : AddressService){}
   
   onFileSelected(event : any) {
 
@@ -46,19 +50,36 @@ export class AppComponent {
             switch (sheet) {
               case "Empleado":
                 console.log("Esta en empleado")
+                data.forEach(worker => {
+                  if(worker != null){
+                    console.log(worker)
+                    this.workerService.addWorkersFromExcel(worker).subscribe()
+                  }
+                });
                 break;
               case "Contrato":
                 console.log("Esta en contrato")
+                data.forEach(contract => {
+                  if(contract != null){
+                    console.log(contract)
+                    this.contractService.addContractFromExcel(contract)
+                  }
+                });
                 break;
               case "Dirección":
                 console.log("Esta en dirección")
+                data.forEach(address => {
+                  if(address != null){
+                    console.log(address)
+                    this.addressService.addAddressFromExcel(address)
+                  }
+                });
               break;
               default:
                 break;
             }
-            console.log(data)
           })
-          console.log(workbook)
+          this.showSnackBar("updateFile", "Fichero cargado con exito. Presione actualizar para ver las importaciones")
         }
       } else {
         this.showSnackBarError("updateFile", "Formato de archivo no admitido. Tiene que ser xlsx")
