@@ -36,6 +36,10 @@ export class WorkerService {
     return this.http.post(url, newWorker)
   }
 
+  addWorkersFromExcel(newWorker: any): Observable<Object>{
+    return this.http.post(url, newWorker)
+  }
+
   getFullName(idWorker : string) : string{
     var workerSearched : Worker
     workerSearched = this.workers.find(worker => worker.id === idWorker)!
