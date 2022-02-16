@@ -1,9 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
-import { FileService } from './services/file/file.service';
 import * as XLSX from 'xlsx';
 import { WorkerService } from './services/worker/worker.service';
 import { ContractService } from './services/contract/contract.service';
