@@ -45,11 +45,14 @@ export class ListComponent implements OnInit {
               public binService : BinService) { }
 
   ngOnInit(): void {
+    console.log("Hola soy sincrona")
     this.getWorkers().subscribe(worker => {
       this.workers= worker;
       this.dataSource = new MatTableDataSource<Worker>(this.workers);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
+      console.log("ahora termine la sincronia")
+      console.log("ves")
     });
   }
 

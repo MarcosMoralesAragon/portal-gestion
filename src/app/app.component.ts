@@ -57,16 +57,14 @@ export class AppComponent {
               let data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
               
               switch (sheet) {
+
                 case "Empleados":
                   // Cuando la hoja es emplados hace esto
-
                   data.forEach(worker => {
                     if(worker != null){
-
                       console.log(worker)
                       // Comprueba que ningun campo este a null
                       if(this.checkWorker(worker as Worker)){
-
                        this.workerService.addWorkersFromExcel(worker).subscribe(addOkay => {
                          if(addOkay){
                             console.log("Empleado en línea " + (data.indexOf(worker) + 2) + " guardado")
@@ -76,13 +74,10 @@ export class AppComponent {
                           console.log("Empleado en línea " + (data.indexOf(worker) + 2) + " contiene errores")
                           workersWrong.push(data.indexOf(worker) + 2)
                        })
-
                       } else {
                         workersWrong.push(data.indexOf(worker) + 2)
                       }
-
                     }
-
                   });
                   break;
 
@@ -106,8 +101,8 @@ export class AppComponent {
                       }
                     }
                   });
-
                   break;
+
                 case "Direcciones":
                   console.log("Esta en dirección")
                   data.forEach(address => {
@@ -129,6 +124,7 @@ export class AppComponent {
                     }
                   });
                 break;
+                
                 default:
                   break;
               }

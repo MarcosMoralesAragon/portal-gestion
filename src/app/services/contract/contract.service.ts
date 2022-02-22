@@ -33,7 +33,6 @@ export class ContractService {
   }
 
   updateContract(contractChanged : Contract) : Observable<any> {
-    console.log("hola")
     console.log(contractChanged.id)
     return this.http.put(url, contractChanged)
   }
