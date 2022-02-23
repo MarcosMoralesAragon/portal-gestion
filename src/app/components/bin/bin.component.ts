@@ -49,23 +49,25 @@ export class BinComponent implements OnInit {
   delete(workerId : string){
     const dialogRef = this.dialog.open(DialogDeleteComponent);
     dialogRef.afterClosed().subscribe(result => {
-
       if(result == "delete"){
-        this.binService.deleteFromBin(workerId).subscribe(isDeleted => {
-          this.ngOnInit()
-          this.snackBarService.showSnackBar(result, "¡Borrado con éxito!")
-        })
-      } else {
         this.snackBarService.showSnackBarError(result, "Acción cancelada")
+        return;
       }
+      this.binService.deleteFromBin(workerId).subscribe(isDeleted => {
+        if(!isDeleted){
+          this.snackBarService.showSnackBarError(result, "Acción cancelada")
+          return;
+        }
+        this.ngOnInit()
+        this.snackBarService.showSnackBar(result, "¡Borrado con éxito!")
+      })
     });
   }
 
   restore(workerId : string){
     this.binService.restore(workerId).subscribe(isRestored => {
       if(isRestored){
-        this.ngOnInit()
-        this.snackBarService.showSnackBar("restore", "¡Restaurado con éxito!")
+        
       } else {
         this.snackBarService.showSnackBarError("restore", "Algo salio mal")
       }
