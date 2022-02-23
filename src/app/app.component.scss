@@ -26,3 +26,7 @@
 .file-input {
     display: none;
 }
+
+::ng-deep snack-bar-container {
+    margin-top: 125px !important;
+}

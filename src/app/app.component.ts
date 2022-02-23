@@ -9,6 +9,8 @@ import { AddressService } from './services/address/address.service';
 import { Worker } from './models/worker';
 import { Contract } from './models/contract';
 import { Address } from './models/address';
+import { Observable } from 'rxjs';
+import { SnackBarService } from './services/snackBar/snack-bar.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +22,7 @@ export class AppComponent {
   title = 'portal-gestion';
 
   constructor(private router:Router,
-              private _snackBar: MatSnackBar,
+              private snackBarService : SnackBarService,
               private workerService : WorkerService,
               private contractService : ContractService,
               private addressService : AddressService){}
@@ -33,9 +35,16 @@ export class AppComponent {
     // Limpia el input antes de usarlo
     event.srcElement.value = "";
 
-    if (file) {
-      if(this.getFileExtension(file.name) === "xlsx"){
 
+      if(!file){
+        this.snackBarService.showSnackBarError("updateFile", "Subida de archivo cancelada")
+          return;
+      }
+
+      if(this.getFileExtension(file.name) !== "xlsx"){
+        this.snackBarService.showSnackBarError("updateFile", "Formato de archivo no admitido. Tiene que ser xlsx")
+        return;
+      }
         console.log("si")
         // Objeto que nos permite leer el archivo
         var fileReader = new FileReader();
@@ -83,24 +92,26 @@ export class AppComponent {
 
                 case "Contratos":
                   console.log("Esta en contrato")
-                  data.forEach(contract => {
-                    if(contract != null){
-                      console.log(contract)
-                      if(this.checkContract(contract as Contract)){
-                        this.contractService.addContractFromExcel(contract).subscribe(addOkay => {
-                          if(addOkay){
-                             console.log("Contrato en línea " + (data.indexOf(contract) + 2) + " guardado")
-                          } 
-                        }
-                        , (error) => {
-                           console.log("Contrato en línea " + (data.indexOf(contract) + 2) + " contiene errores")
-                           contractsWrong.push(data.indexOf(contract) + 2)
-                        })
-                      } else {
-                        contractsWrong.push(data.indexOf(contract))
-                      }
-                    }
-                  });
+
+                  this.abstrayendo(data, this.contractService.addContractFromExcel, contractsWrong);
+                  // data.forEach(contract => {
+                  //   if(contract != null){
+                  //     console.log(contract)
+                  //     if(this.checkContract(contract as Contract)){
+                  //       this.contractService.addContractFromExcel(contract).subscribe(addOkay => {
+                  //         if(addOkay){
+                  //            console.log("Contrato en línea " + (data.indexOf(contract) + 2) + " guardado")
+                  //         } 
+                  //       }
+                  //       , (error) => {
+                  //          console.log("Contrato en línea " + (data.indexOf(contract) + 2) + " contiene errores")
+                  //          contractsWrong.push(data.indexOf(contract) + 2)
+                  //       })
+                  //     } else {
+                  //       contractsWrong.push(data.indexOf(contract))
+                  //     }
+                  //   }
+                  // });
                   break;
 
                 case "Direcciones":
@@ -132,65 +143,40 @@ export class AppComponent {
             if(workersWrong.length > 0 || contractsWrong.length > 0 || addressWrong.length > 0 ){
               setTimeout(() =>{ 
                 var info : string = this.infoWhereIsWrong(workersWrong, contractsWrong, addressWrong)
-                this.showSnackBarWarning("updateFile", "Algunas lineas del fichero no se han podído cargar por errores en sus datos , las líneas son : " + info)
+                this.snackBarService.showSnackBarWarning("updateFile", "Algunas lineas del fichero no se han podído cargar por errores en sus datos , las líneas son : " + info)
               }, 50)
             } else {
-              this.showSnackBar("updateFile", "Fichero cargado con exito. Presione actualizar para ver las importaciones")
+              this.snackBarService.showSnackBar("updateFile", "Fichero cargado con exito. Presione actualizar para ver las importaciones")
             }
           } else {
-            this.showSnackBarError("updateFile", "Revise que las hojas del fichero estan correctas")
+            this.snackBarService.showSnackBarError("updateFile", "Revise que las hojas del fichero estan correctas")
           }
         }
-      } else {
-        this.showSnackBarError("updateFile", "Formato de archivo no admitido. Tiene que ser xlsx")
+      
+  }
+
+
+  abstrayendo(row: any[], addWorkersFromExcel: (worker: any) => Observable<any>, errorsArray: any[]) {
+    row.forEach(worker => {
+      if(worker != null){
+        console.log(worker)
+        // Comprueba que ningun campo este a null
+        if(this.checkWorker(worker as Worker)){
+          addWorkersFromExcel(worker).subscribe(addOkay => {
+           if(addOkay){
+              console.log("Empleado en línea " + (row.indexOf(worker) + 2) + " guardado")
+           } 
+         }
+         , (error) => {
+            console.log("Empleado en línea " + (row.indexOf(worker) + 2) + " contiene errores")
+            errorsArray.push(row.indexOf(worker) + 2)
+         })
+        } else {
+          errorsArray.push(row.indexOf(worker) + 2)
+        }
       }
-
-    } else {
-      this.showSnackBarError("updateFile", "Subida de archivo cancelada")
-    }
+    });
   }
-
-  showSnackBar(acctionDone:string, message: string){
-    this._snackBar.openFromComponent(SnackbarComponent, {
-      duration : 3250,
-      panelClass: ['green-snackbar'],
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      
-      data:{
-        messageSnackbar: message,
-        acctionDoneSnackbar : acctionDone
-      } 
-    })
-  }
-
-  showSnackBarWarning(acctionDone:string, message: string){
-    this._snackBar.openFromComponent(SnackbarComponent, {
-      duration : 4750,
-      panelClass: ['yellow-snackbar'],
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      
-      data:{
-        messageSnackbar: message,
-        acctionDoneSnackbar : acctionDone
-      } 
-    })
-  }
-
-  showSnackBarError(acctionDone:string, message: string){
-    this._snackBar.openFromComponent(SnackbarComponent, {
-      duration : 3250,
-      panelClass: ['red-snackbar'],
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      data:{
-        messageSnackbar: message,
-        acctionDoneSnackbar : acctionDone
-      } 
-    })
-  }
-
 
   getFileExtension(fileName : string) : string{
     if(fileName.length > 4){
