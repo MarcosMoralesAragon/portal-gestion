@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Worker } from 'src/app/models/worker';
 import { BinService } from 'src/app/services/bin/bin.service';
 import { DateService } from 'src/app/services/date/date.service';
+import { SnackBarService } from 'src/app/services/snackBar/snack-bar.service';
 import { StateService } from 'src/app/services/state/state.service';
 import { WorkerService } from 'src/app/services/worker/worker.service';
 import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component';
@@ -32,7 +33,7 @@ export class BinComponent implements OnInit {
               public stateService : StateService,
               public dateService : DateService,
               public route : Router,
-              public _snackBar : MatSnackBar,
+              public snackBarService: SnackBarService,
               public workerService : WorkerService,
               public dialog: MatDialog) { }
 
@@ -45,33 +46,6 @@ export class BinComponent implements OnInit {
     })
   }
 
-  showSnackBar(acctionDone:string, message: string){
-    this._snackBar.openFromComponent(SnackbarComponent, {
-      duration : 3250,
-      panelClass: ['green-snackbar'],
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      
-      data:{
-        messageSnackbar: message,
-        acctionDoneSnackbar : acctionDone
-      } 
-    })
-  }
-
-  showSnackBarError(acctionDone:string, message: string){
-    this._snackBar.openFromComponent(SnackbarComponent, {
-      duration : 3250,
-      panelClass: ['red-snackbar'],
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      data:{
-        messageSnackbar: message,
-        acctionDoneSnackbar : acctionDone
-      } 
-    })
-  }
-
   delete(workerId : string){
     const dialogRef = this.dialog.open(DialogDeleteComponent);
     dialogRef.afterClosed().subscribe(result => {
@@ -79,10 +53,10 @@ export class BinComponent implements OnInit {
       if(result == "delete"){
         this.binService.deleteFromBin(workerId).subscribe(isDeleted => {
           this.ngOnInit()
-          this.showSnackBar(result, "¡Borrado con éxito!")
+          this.snackBarService.showSnackBar(result, "¡Borrado con éxito!")
         })
       } else {
-        this.showSnackBarError(result, "Acción cancelada")
+        this.snackBarService.showSnackBarError(result, "Acción cancelada")
       }
     });
   }
@@ -91,9 +65,9 @@ export class BinComponent implements OnInit {
     this.binService.restore(workerId).subscribe(isRestored => {
       if(isRestored){
         this.ngOnInit()
-        this.showSnackBar("restore", "¡Restaurado con éxito!")
+        this.snackBarService.showSnackBar("restore", "¡Restaurado con éxito!")
       } else {
-        this.showSnackBarError("restore", "Algo salio mal")
+        this.snackBarService.showSnackBarError("restore", "Algo salio mal")
       }
     })
   }
@@ -106,9 +80,9 @@ export class BinComponent implements OnInit {
     this.binService.restoreAll().subscribe(isRestoredAll => {
       if(isRestoredAll){
         this.ngOnInit()
-        this.showSnackBar("restore", "Restaurados todos con éxito!")
+        this.snackBarService.showSnackBar("restore", "Restaurados todos con éxito!")
       } else {
-        this.showSnackBarError("restore", "Algo salio mal")
+        this.snackBarService.showSnackBarError("restore", "Algo salio mal")
       }
     })
   }
@@ -117,16 +91,16 @@ export class BinComponent implements OnInit {
     this.binService.deleteAllBin().subscribe(allDeleted => {
       if(allDeleted){
         this.ngOnInit()
-        this.showSnackBar("delete", "¡Borrado con éxito!")
+        this.snackBarService.showSnackBar("delete", "¡Borrado con éxito!")
       }else{
-        this.showSnackBarError("delete", "Algo salio mal")
+        this.snackBarService.showSnackBarError("delete", "Algo salio mal")
       }
     })
   }
   
   refresh(){
     this.ngOnInit()
-    this.showSnackBar("refresh","Recarga completa")
+    this.snackBarService.showSnackBar("refresh","Recarga completa")
   }
 
 }
