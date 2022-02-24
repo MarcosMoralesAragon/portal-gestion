@@ -9,8 +9,6 @@ import { Contract } from './models/contract';
 import { Address } from './models/address';
 import { Observable } from 'rxjs';
 import { SnackBarService } from './services/snackBar/snack-bar.service';
-import { Interface } from 'readline';
-import { Console } from 'console';
 
 @Component({
   selector: 'app-root',
@@ -66,16 +64,16 @@ export class AppComponent {
 
           case "Empleados":
             console.log("Esta en empleado");
-            this.addElement(data, this.workerService.addWorkersFromExcel, this.checkWorker , workersWrong);
+            this.addElement(data, this.workerService, this.checkWorker , workersWrong);
           break;
           case "Contratos":
             console.log("Esta en contrato")
-            this.addElement(data, this.contractService.addContractFromExcel, this.checkContract , contractsWrong);
+            this.addElement(data, this.contractService, this.checkContract , contractsWrong);
           break;
 
           case "Direcciones":
             console.log("Esta en dirección")
-            this.addElement(data, this.addressService.addAddressFromExcel, this.checkAddress , addressWrong);
+            this.addElement(data, this.addressService, this.checkAddress , addressWrong);
           break;
                 
           default:
@@ -94,18 +92,18 @@ export class AppComponent {
   }
 
 
-  addElement(row: any[], addElementFromExcel: (element: any) => Observable<any>, checkElement : (element : any) => boolean, errorsArray: any[]) {
+  addElement(row: any[], serviceElement : any, checkElement : (element : any) => boolean, errorsArray: any[]) {
     row.forEach(element => {
       if(element != null){
         console.log(element)
         // Comprueba que ningun campo este a null
         if(checkElement(element as Worker | Address | Contract)){
-          addElementFromExcel(element).subscribe(addOkay => {
+          serviceElement.addFromExcel(element).subscribe((addOkay : any) => {
            if(addOkay){
               console.log("Empleado en línea " + (row.indexOf(element) + 2) + " guardado")
-           } 
+            } 
          }
-         , (error) => {
+         , (error:any) => {
             console.log("Empleado en línea " + (row.indexOf(element) + 2) + " contiene errores")
             errorsArray.push(row.indexOf(element) + 2)
          })

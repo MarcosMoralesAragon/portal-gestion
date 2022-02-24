@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -12,7 +11,6 @@ import { SnackBarService } from 'src/app/services/snackBar/snack-bar.service';
 import { StateService } from 'src/app/services/state/state.service';
 import { WorkerService } from 'src/app/services/worker/worker.service';
 import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component';
-import { SnackbarComponent } from '../snackbar/snackbar.component';
 
 @Component({
   selector: 'app-bin',
@@ -49,7 +47,7 @@ export class BinComponent implements OnInit {
   delete(workerId : string){
     const dialogRef = this.dialog.open(DialogDeleteComponent);
     dialogRef.afterClosed().subscribe(result => {
-      if(result == "delete"){
+      if(result != "delete"){
         this.snackBarService.showSnackBarError(result, "Acción cancelada")
         return;
       }
@@ -66,11 +64,12 @@ export class BinComponent implements OnInit {
 
   restore(workerId : string){
     this.binService.restore(workerId).subscribe(isRestored => {
-      if(isRestored){
-        
-      } else {
+      if(!isRestored){
         this.snackBarService.showSnackBarError("restore", "Algo salio mal")
+        return;
       }
+      this.ngOnInit()
+      this.snackBarService.showSnackBar("restore", "Restaurado todos con éxito!")
     })
   }
 

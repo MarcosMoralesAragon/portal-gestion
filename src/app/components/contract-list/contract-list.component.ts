@@ -100,20 +100,18 @@ export class ContractListComponent implements OnInit {
         data: contractEditing!
       })
       dialogRef.afterClosed().subscribe(result => {
-
-        if(result?.result == "edit"){
-  
-          this.contractService.updateContract(result.contract).subscribe(isUpdated => {
-            if(isUpdated){
-              this.ngOnInit()
-              this.snackBarService.showSnackBar(result.result, "¡Contrato editado!")
-            }else{
-              this.snackBarService.showSnackBarError(result, "Algo salio mal")
-            }
-          })
-        } else {
+        if(result?.result != "edit"){
           this.snackBarService.showSnackBarError(result, "Acción cancelada")
+          return;
         }
+        this.contractService.updateContract(result.contract).subscribe(isUpdated => {
+          if(!isUpdated){
+            this.snackBarService.showSnackBarError(result, "Algo salio mal")
+            return;
+          }
+          this.ngOnInit()
+          this.snackBarService.showSnackBar(result.result, "¡Contrato editado!")
+        })
       });
     })
     

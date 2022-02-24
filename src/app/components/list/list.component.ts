@@ -19,6 +19,7 @@ import { DialogCreateAddressComponent } from '../dialog/dialog-create-address/di
 import { BinService } from 'src/app/services/bin/bin.service';
 import { Observable } from 'rxjs';
 import { SnackBarService } from 'src/app/services/snackBar/snack-bar.service';
+import { DialogService } from 'src/app/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-list',
@@ -38,6 +39,7 @@ export class ListComponent implements OnInit {
 
   constructor(public workerService: WorkerService,
               public dialog: MatDialog,
+              public dialogService : DialogService,
               private snackBarService : SnackBarService,
               private router: Router,
               public dateService : DateService,
@@ -46,6 +48,7 @@ export class ListComponent implements OnInit {
               public binService : BinService) { }
 
   ngOnInit(): void {
+    console.log("Paso")
     this.getWorkers().subscribe(worker => {
       this.workers= worker;
       this.dataSource = new MatTableDataSource<Worker>(this.workers);
@@ -124,23 +127,7 @@ export class ListComponent implements OnInit {
   }
 
   openDialogCreateAddress(workerId : string){
-    const dialogRef = this.dialog.open(DialogCreateAddressComponent, {
-      data : workerId
-    })
-    dialogRef.afterClosed().subscribe(result =>{
-      if(result?.result != "create"){
-        this.snackBarService.showSnackBarError(result, "Acción cancelada")
-        return;
-      }
-      this.addressService.addAddress(result.data).subscribe(isCreated => {
-        if(!isCreated){
-          this.snackBarService.showSnackBarError(result, "Algo salio mal ")
-          return;
-        }
-        this.ngOnInit()        
-        this.snackBarService.showSnackBar(result.result, "¡Creado con éxito!")
-      })
-    })
+    this.dialogService.openDialogCreateAddress(DialogCreateAddressComponent,workerId,"create",this.addressService, this.ngOnInit())
   }
 
   navigateToCreate(){
