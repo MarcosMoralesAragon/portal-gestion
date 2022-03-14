@@ -28,7 +28,7 @@ export class ContractService {
     return this.http.post(url, newContract)
   }
 
-  addContractFromExcel(newContract : unknown) : Observable<any>{
+  addFromExcel(newContract : unknown) : Observable<any>{
     return this.http.post(url, newContract)
   }
 

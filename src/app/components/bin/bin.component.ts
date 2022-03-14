@@ -1,18 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Worker } from 'src/app/models/worker';
 import { BinService } from 'src/app/services/bin/bin.service';
 import { DateService } from 'src/app/services/date/date.service';
+import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { SnackBarService } from 'src/app/services/snackBar/snack-bar.service';
 import { StateService } from 'src/app/services/state/state.service';
 import { WorkerService } from 'src/app/services/worker/worker.service';
 import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component';
-import { SnackbarComponent } from '../snackbar/snackbar.component';
 
 @Component({
   selector: 'app-bin',
@@ -35,7 +34,7 @@ export class BinComponent implements OnInit {
               public route : Router,
               public snackBarService: SnackBarService,
               public workerService : WorkerService,
-              public dialog: MatDialog) { }
+              public dialogService : DialogService) { }
 
   ngOnInit(): void {
     this.binService.getBin().subscribe(worker => {
@@ -47,28 +46,30 @@ export class BinComponent implements OnInit {
   }
 
   delete(workerId : string){
-    const dialogRef = this.dialog.open(DialogDeleteComponent);
-    dialogRef.afterClosed().subscribe(result => {
-
-      if(result == "delete"){
-        this.binService.deleteFromBin(workerId).subscribe(isDeleted => {
-          this.ngOnInit()
-          this.snackBarService.showSnackBar(result, "¡Borrado con éxito!")
-        })
-      } else {
+    this.dialogService.openDialog(DialogDeleteComponent).subscribe(result => {
+      if(result != "delete"){
         this.snackBarService.showSnackBarError(result, "Acción cancelada")
+        return;
       }
+      this.binService.deleteFromBin(workerId).subscribe(isDeleted => {
+        if(!isDeleted){
+          this.snackBarService.showSnackBarError(result, "Acción cancelada")
+          return;
+        }
+        this.ngOnInit()
+        this.snackBarService.showSnackBar(result, "¡Borrado con éxito!")
+      })
     });
   }
 
   restore(workerId : string){
     this.binService.restore(workerId).subscribe(isRestored => {
-      if(isRestored){
-        this.ngOnInit()
-        this.snackBarService.showSnackBar("restore", "¡Restaurado con éxito!")
-      } else {
+      if(!isRestored){
         this.snackBarService.showSnackBarError("restore", "Algo salio mal")
+        return;
       }
+      this.ngOnInit()
+      this.snackBarService.showSnackBar("restore", "Restaurado todos con éxito!")
     })
   }
 

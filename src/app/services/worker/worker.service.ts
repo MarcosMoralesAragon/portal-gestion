@@ -36,7 +36,7 @@ export class WorkerService {
     return this.http.post(url, newWorker)
   }
 
-  addWorkersFromExcel(newWorker: any): Observable<Object>{
+  addFromExcel(newWorker: any): Observable<Object>{
     return this.http.post(url, newWorker)
   }
 

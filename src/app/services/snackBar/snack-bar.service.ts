@@ -39,7 +39,7 @@ export class SnackBarService {
 
   showSnackBarError(acctionDone:string, message: string){
     this._snackBar.openFromComponent(SnackbarComponent, {
-      duration : 325000000,
+      duration : 3250,
       panelClass: ['red-snackbar'],
       horizontalPosition: 'right',
       verticalPosition: 'top',

@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import * as XLSX from 'xlsx';
 import { WorkerService } from './services/worker/worker.service';
 import { ContractService } from './services/contract/contract.service';
@@ -28,151 +26,89 @@ export class AppComponent {
               private addressService : AddressService){}
   
   onFileSelected(event : any) {
-
     // Saca el archivo introducido
     let file:File = event.target.files[0];
-
     // Limpia el input antes de usarlo
     event.srcElement.value = "";
+    if(!file){
+      this.snackBarService.showSnackBarError("updateFile", "Subida de archivo cancelada")
+      return;
+    }
+    if(this.getFileExtension(file.name) !== "xlsx"){
+      this.snackBarService.showSnackBarError("updateFile", "Formato de archivo no admitido. Tiene que ser xlsx")
+      return;
+    } 
+    // Objeto que nos permite leer el archivo
+    var fileReader = new FileReader();
+    fileReader.readAsBinaryString(file)
 
-
-      if(!file){
-        this.snackBarService.showSnackBarError("updateFile", "Subida de archivo cancelada")
-          return;
-      }
-
-      if(this.getFileExtension(file.name) !== "xlsx"){
-        this.snackBarService.showSnackBarError("updateFile", "Formato de archivo no admitido. Tiene que ser xlsx")
+    fileReader.onload = (event:any) => {
+      // Saca los datos y lo vuelve un binario
+      let binaryData = event.target.result
+      // Crea un objeto con todos los datos del xlsx que le hemos pasado
+      let workbook = XLSX.read(binaryData,{type:'binary', cellDates : true})
+      if(!this.sheetNamesAreOk(workbook.SheetNames)){ 
+        this.snackBarService.showSnackBarError("updateFile", "Revise que las hojas del fichero estan correctas")
         return;
       }
-        console.log("si")
-        // Objeto que nos permite leer el archivo
-        var fileReader = new FileReader();
-        fileReader.readAsBinaryString(file)
+      // Por cada hoja del xlsx lo combierte a un json los datos de las columnas
+      var workersWrong: Array<number> = []
+      var contractsWrong: Array<number> = []
+      var addressWrong: Array<number> = []
 
-        fileReader.onload = (event:any) => {
-          // Saca los datos y lo vuelve un binario
-          let binaryData = event.target.result
-          // Crea un objeto con todos los datos del xlsx que le hemos pasado
-          let workbook = XLSX.read(binaryData,{type:'binary', cellDates : true})
-          if(this.sheetNamesAreOk(workbook.SheetNames)){
-            // Por cada hoja del xlsx lo combierte a un json los datos de las columnas
-            var workersWrong: Array<number> = []
-            var contractsWrong: Array<number> = []
-            var addressWrong: Array<number> = []
-
-            workbook.SheetNames.forEach(sheet => {
-              // Hace json la hoja sheet
-              let data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
+      workbook.SheetNames.forEach(sheet => {
+        // Hace json la hoja sheet
+        let data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
               
-              switch (sheet) {
+        switch (sheet) {
 
-                case "Empleados":
-                  // Cuando la hoja es emplados hace esto
-                  data.forEach(worker => {
-                    if(worker != null){
-                      console.log(worker)
-                      // Comprueba que ningun campo este a null
-                      if(this.checkWorker(worker as Worker)){
-                       this.workerService.addWorkersFromExcel(worker).subscribe(addOkay => {
-                         if(addOkay){
-                            console.log("Empleado en línea " + (data.indexOf(worker) + 2) + " guardado")
-                         } 
-                       }
-                       , (error) => {
-                          console.log("Empleado en línea " + (data.indexOf(worker) + 2) + " contiene errores")
-                          workersWrong.push(data.indexOf(worker) + 2)
-                       })
-                      } else {
-                        workersWrong.push(data.indexOf(worker) + 2)
-                      }
-                    }
-                  });
-                  break;
+          case "Empleados":
+            console.log("Esta en empleado");
+            this.addElement(data, this.workerService, this.checkWorker , workersWrong);
+          break;
+          case "Contratos":
+            console.log("Esta en contrato")
+            this.addElement(data, this.contractService, this.checkContract , contractsWrong);
+          break;
 
-                case "Contratos":
-                  console.log("Esta en contrato")
-
-                  this.abstrayendo(data, this.contractService.addContractFromExcel, contractsWrong);
-                  // data.forEach(contract => {
-                  //   if(contract != null){
-                  //     console.log(contract)
-                  //     if(this.checkContract(contract as Contract)){
-                  //       this.contractService.addContractFromExcel(contract).subscribe(addOkay => {
-                  //         if(addOkay){
-                  //            console.log("Contrato en línea " + (data.indexOf(contract) + 2) + " guardado")
-                  //         } 
-                  //       }
-                  //       , (error) => {
-                  //          console.log("Contrato en línea " + (data.indexOf(contract) + 2) + " contiene errores")
-                  //          contractsWrong.push(data.indexOf(contract) + 2)
-                  //       })
-                  //     } else {
-                  //       contractsWrong.push(data.indexOf(contract))
-                  //     }
-                  //   }
-                  // });
-                  break;
-
-                case "Direcciones":
-                  console.log("Esta en dirección")
-                  data.forEach(address => {
-                    if(address != null){
-                      console.log(address)
-                      if(this.checkAddress(address as Address)){
-                        this.addressService.addAddressFromExcel(address).subscribe(addOkay => {
-                          if(addOkay){
-                             console.log("Dirección en línea " + (data.indexOf(address) + 2) + " guardado")
-                          } 
-                        }
-                        , (error) => {
-                           console.log("Dirección en línea " + (data.indexOf(address) + 2) + " contiene errores")
-                           addressWrong.push(data.indexOf(address) + 2)
-                        })
-                      } else {
-                        addressWrong.push(data.indexOf(address))
-                      }
-                    }
-                  });
-                break;
+          case "Direcciones":
+            console.log("Esta en dirección")
+            this.addElement(data, this.addressService, this.checkAddress , addressWrong);
+          break;
                 
-                default:
-                  break;
-              }
-            })
-            if(workersWrong.length > 0 || contractsWrong.length > 0 || addressWrong.length > 0 ){
-              setTimeout(() =>{ 
-                var info : string = this.infoWhereIsWrong(workersWrong, contractsWrong, addressWrong)
-                this.snackBarService.showSnackBarWarning("updateFile", "Algunas lineas del fichero no se han podído cargar por errores en sus datos , las líneas son : " + info)
-              }, 50)
-            } else {
-              this.snackBarService.showSnackBar("updateFile", "Fichero cargado con exito. Presione actualizar para ver las importaciones")
-            }
-          } else {
-            this.snackBarService.showSnackBarError("updateFile", "Revise que las hojas del fichero estan correctas")
-          }
+          default:
+          break;
         }
-      
+      })
+      if(workersWrong.length > 0 || contractsWrong.length > 0 || addressWrong.length > 0 ){
+       setTimeout(() =>{ 
+         var info : string = this.infoWhereIsWrong(workersWrong, contractsWrong, addressWrong)
+         this.snackBarService.showSnackBarWarning("updateFile", "Algunas lineas del fichero no se han podído cargar por errores en sus datos , las líneas son : " + info)
+        }, 50)
+      } else {
+       this.snackBarService.showSnackBar("updateFile", "Fichero cargado con exito. Presione actualizar para ver las importaciones")
+      }
+    }
   }
 
 
-  abstrayendo(row: any[], addWorkersFromExcel: (worker: any) => Observable<any>, errorsArray: any[]) {
-    row.forEach(worker => {
-      if(worker != null){
-        console.log(worker)
+  addElement(row: any[], serviceElement : any, checkElement : (element : any) => boolean, errorsArray: any[]) {
+    row.forEach(element => {
+      if(element != null){
+        console.log(element)
         // Comprueba que ningun campo este a null
-        if(this.checkWorker(worker as Worker)){
-          addWorkersFromExcel(worker).subscribe(addOkay => {
+        if(checkElement(element as Worker | Address | Contract)){
+          serviceElement.addFromExcel(element).subscribe((addOkay : any) => {
            if(addOkay){
-              console.log("Empleado en línea " + (row.indexOf(worker) + 2) + " guardado")
-           } 
+              console.log("Empleado en línea " + (row.indexOf(element) + 2) + " guardado")
+            } 
          }
-         , (error) => {
-            console.log("Empleado en línea " + (row.indexOf(worker) + 2) + " contiene errores")
-            errorsArray.push(row.indexOf(worker) + 2)
+         , (error:any) => {
+            console.log("Empleado en línea " + (row.indexOf(element) + 2) + " contiene errores")
+            errorsArray.push(row.indexOf(element) + 2)
          })
         } else {
-          errorsArray.push(row.indexOf(worker) + 2)
+          errorsArray.push(row.indexOf(element) + 2)
         }
       }
     });

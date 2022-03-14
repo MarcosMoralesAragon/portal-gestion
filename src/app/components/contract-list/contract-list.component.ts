@@ -13,6 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { SnackBarService } from 'src/app/services/snackBar/snack-bar.service';
+import { DialogService } from 'src/app/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-contract-list',
@@ -33,11 +34,15 @@ export class ContractListComponent implements OnInit {
               private contractService : ContractService,
               public positionService : PositionService,
               public dateService : DateService,
-              public dialog: MatDialog,
+              public dialogService : DialogService,
               private snackBarService: SnackBarService,
               private router : Router) { }
 
   ngOnInit(): void {
+    this.chargueData()
+  }
+
+  chargueData(){
     this.idWorker = this.activatedRoute.snapshot.paramMap.get('id')
     this.getContracts(this.idWorker!).subscribe(contract => {
       this.contracts = contract
@@ -49,11 +54,8 @@ export class ContractListComponent implements OnInit {
   }
 
   openDialogDelete(contractId : string) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent);
-    dialogRef.afterClosed().subscribe(result => {
-
+    this.dialogService.openDialog(DialogDeleteComponent).subscribe(result => {
       if(result == "delete"){
-
         this.contractService.deleteContract(contractId).subscribe(isDeleted => {
           if(isDeleted){
             this.ngOnInit()
@@ -62,7 +64,6 @@ export class ContractListComponent implements OnInit {
             this.snackBarService.showSnackBarError(result, "Algo salio mal")
           }
         })
-        
       } else {
         this.snackBarService.showSnackBarError(result, "Acción cancelada")
       }
@@ -70,14 +71,7 @@ export class ContractListComponent implements OnInit {
   }
 
   openDialogCreate(){
-    const dialogRef = this.dialog.open(DialogCreateContractComponent, 
-      { 
-        width: '750px',
-        height: '550px',
-        data: this.idWorker
-      });
-    dialogRef.afterClosed().subscribe(result => {
-
+    this.dialogService.openDialog(DialogCreateContractComponent,this.idWorker, '750px', '550px').subscribe(result => {
       if(result?.result == "create"){
         console.log(result.contract)
         this.contractService.addContract(result.contract).subscribe(isAdded => {
@@ -91,29 +85,20 @@ export class ContractListComponent implements OnInit {
   }
 
   openDialogEdit(contractId : string) {
-    
-    var contractEditing : Contract;
-
     this.getContractById(contractId).subscribe(contract => {
-      contractEditing = contract
-      const dialogRef = this.dialog.open(DialogEditContractComponent, {
-        data: contractEditing!
-      })
-      dialogRef.afterClosed().subscribe(result => {
-
-        if(result?.result == "edit"){
-  
-          this.contractService.updateContract(result.contract).subscribe(isUpdated => {
-            if(isUpdated){
-              this.ngOnInit()
-              this.snackBarService.showSnackBar(result.result, "¡Contrato editado!")
-            }else{
-              this.snackBarService.showSnackBarError(result, "Algo salio mal")
-            }
-          })
-        } else {
+      this.dialogService.openDialog(DialogEditContractComponent, contract!).subscribe(result => {
+        if(result?.result != "edit"){
           this.snackBarService.showSnackBarError(result, "Acción cancelada")
+          return;
         }
+        this.contractService.updateContract(result.contract).subscribe(isUpdated => {
+          if(!isUpdated){
+            this.snackBarService.showSnackBarError(result, "Algo salio mal")
+            return;
+          }
+          this.ngOnInit()
+          this.snackBarService.showSnackBar(result.result, "¡Contrato editado!")
+        })
       });
     })
     
