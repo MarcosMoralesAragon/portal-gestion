@@ -1,5 +1,4 @@
 import {  Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog} from '@angular/material/dialog';
 import { Worker } from 'src/app/models/worker';
 import { WorkerService } from 'src/app/services/worker/worker.service';
 import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component';

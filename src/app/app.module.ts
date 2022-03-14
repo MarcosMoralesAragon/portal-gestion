@@ -29,12 +29,11 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatStepperModule} from '@angular/material/stepper';
-import { DialogEditContractComponent } from './components/dialog/dialog-edit-contract/dialog-edit-contract.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
+import {DialogEditContractComponent } from './components/dialog/dialog-edit-contract/dialog-edit-contract.component';
+import {MatPaginatorModule } from '@angular/material/paginator';
+import {MatSortModule } from '@angular/material/sort';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {MatBadgeModule} from '@angular/material/badge';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -72,7 +71,6 @@ import { HttpClientModule } from '@angular/common/http';
     MatPaginatorModule,
     MatSortModule,
     MatExpansionModule,
-    MatBadgeModule,
     HttpClientModule,
     FlexLayoutModule
   ],
