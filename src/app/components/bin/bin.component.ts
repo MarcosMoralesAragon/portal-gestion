@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Worker } from 'src/app/models/worker';
 import { BinService } from 'src/app/services/bin/bin.service';
 import { DateService } from 'src/app/services/date/date.service';
+import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { SnackBarService } from 'src/app/services/snackBar/snack-bar.service';
 import { StateService } from 'src/app/services/state/state.service';
 import { WorkerService } from 'src/app/services/worker/worker.service';
@@ -33,7 +34,7 @@ export class BinComponent implements OnInit {
               public route : Router,
               public snackBarService: SnackBarService,
               public workerService : WorkerService,
-              public dialog: MatDialog) { }
+              public dialogService : DialogService) { }
 
   ngOnInit(): void {
     this.binService.getBin().subscribe(worker => {
@@ -45,8 +46,7 @@ export class BinComponent implements OnInit {
   }
 
   delete(workerId : string){
-    const dialogRef = this.dialog.open(DialogDeleteComponent);
-    dialogRef.afterClosed().subscribe(result => {
+    this.dialogService.openDialog(DialogDeleteComponent).subscribe(result => {
       if(result != "delete"){
         this.snackBarService.showSnackBarError(result, "Acción cancelada")
         return;

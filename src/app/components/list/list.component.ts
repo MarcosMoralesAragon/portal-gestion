@@ -38,7 +38,6 @@ export class ListComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(public workerService: WorkerService,
-              public dialog: MatDialog,
               public dialogService : DialogService,
               private snackBarService : SnackBarService,
               private router: Router,
@@ -47,20 +46,22 @@ export class ListComponent implements OnInit {
               public addressService : AddressService,
               public binService : BinService) { }
 
-  ngOnInit(): void {
-    console.log("Paso")
-    this.getWorkers().subscribe(worker => {
+  ngOnInit() : any{
+    this.chargueData()
+  }
+
+  chargueData(){
+    this.workerService.getWorkers().subscribe(worker => {
       this.workers= worker;
       this.dataSource = new MatTableDataSource<Worker>(this.workers);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
+      return true;
     });
   }
 
   openDialogDelete(workerId : string) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
+    this.dialogService.openDialog(DialogDeleteComponent).subscribe(result => {
       
       if(result != "delete"){
         this.snackBarService.showSnackBarError(result, "Acción cancelada")
@@ -76,7 +77,7 @@ export class ListComponent implements OnInit {
             this.snackBarService.showSnackBarError(result, "Borrado fallido")
             return;
           }
-          this.ngOnInit()
+          this.chargueData()
           this.snackBarService.showSnackBar(result, "¡Borrado con éxito!")
         })
       })
@@ -84,13 +85,7 @@ export class ListComponent implements OnInit {
   }
 
   openDialogEdit(workerId : string){
-    const dialogRef = this.dialog.open(DialogEditComponent, {
-      width: '800px',
-      height: '600px',
-      data : {...this.workers.find(worker => worker.id === workerId)}
-    })
-
-    dialogRef.afterClosed().subscribe(result =>{
+    this.dialogService.openDialog(DialogEditComponent, {...this.workers.find(worker => worker.id === workerId)}, '800px', '600px').subscribe(result =>{
       if(result?.result != "edit"){
         this.snackBarService.showSnackBarError(result, "Acción cancelada")
         return;
@@ -100,17 +95,14 @@ export class ListComponent implements OnInit {
           this.snackBarService.showSnackBarError(result.result, "Editado fallido")
           return;
         }
-        this.ngOnInit()        
+        this.chargueData()        
         this.snackBarService.showSnackBar(result.result, "¡Editado con éxito!")
       })
     })
   }
 
   openDialogEditAddress(workerId : string){
-    const dialogRef = this.dialog.open(DialogEditAddressComponent, {
-      data : {...this.workers.find(worker => worker.id === workerId)?.address}
-    })
-    dialogRef.afterClosed().subscribe(result =>{
+    this.dialogService.openDialog(DialogEditAddressComponent,{...this.workers.find(worker => worker.id === workerId)?.address}).subscribe(result =>{
       if(result?.result != "edit"){
         this.snackBarService.showSnackBarError(result, "Acción cancelada")
         return;
@@ -120,21 +112,34 @@ export class ListComponent implements OnInit {
           this.snackBarService.showSnackBarError(result, "Algo salio mal")
           return;
         }
-        this.ngOnInit()
+        this.chargueData()
         this.snackBarService.showSnackBar(result.result, "¡Editado con éxito!")
       })
     })
   }
 
   openDialogCreateAddress(workerId : string){
-    this.dialogService.openDialogCreateAddress(DialogCreateAddressComponent,workerId,"create",this.addressService, this.ngOnInit())
+    this.dialogService.openDialog(DialogCreateAddressComponent,workerId).subscribe(result => {
+      if(result?.result == "create"){
+        this.addressService.addAddress(result.data).subscribe(isCreated => {
+          if(isCreated){
+            this.ngOnInit()        
+            this.snackBarService.showSnackBar(result.result, "¡Creado con éxito!")
+          }else{
+            this.snackBarService.showSnackBarError(result, "Algo salio mal ")
+          }
+        })
+      } else {
+        this.snackBarService.showSnackBarError(result, "Acción cancelada")
+      }
+    })
   }
 
   navigateToCreate(){
     this.router.navigateByUrl('/create')
   }
 
-  navigateToSeeDelete(){
+  navigateToSeeDelete(){  
     this.router.navigateByUrl('/bin')
   }
 
@@ -142,7 +147,7 @@ export class ListComponent implements OnInit {
     this.router.navigateByUrl('/list-contracts/' + workerId)
   }
 
-  refreshButton(){
+  refreshButton() : any{
     this.ngOnInit()
     this.snackBarService.showSnackBar("refresh", "¡Refrescado con éxito!")
   }

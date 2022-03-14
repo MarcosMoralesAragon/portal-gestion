@@ -1,6 +1,7 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { SnackBarService } from '../snackBar/snack-bar.service';
 
 @Injectable({
@@ -11,25 +12,13 @@ export class DialogService {
   constructor(public dialog: MatDialog,
               public snackBarService : SnackBarService) { }
 
-  openDialogCreateAddress(dialogOpening: ComponentType<unknown>, dataSend : any, acction: string, serviceAction : any, reload : () => unknown) : any{
+  openDialog(dialogOpening: ComponentType<unknown>, dataSend ?: any, width ?: any, height ?: any) : Observable<any>{
     const dialogRef = this.dialog.open(dialogOpening, {
-      data : dataSend
+      data : dataSend,
+      width : width,
+      height : height
     })
-    dialogRef.afterClosed().subscribe(result =>{
-      if(result?.result != acction){
-        this.snackBarService.showSnackBarError(result, "Acción cancelada")
-        return;
-      }
-      serviceAction.addAddress(result.data).subscribe((isCreated: any) => {
-        if(!isCreated){
-          this.snackBarService.showSnackBarError(result, "Algo salio mal ")
-          return;
-        }   
-        this.snackBarService.showSnackBar(result.result, "¡Acción compleata!")
-        reload()
-        return true;
-      })
-      return;
-    })
+    return dialogRef.afterClosed()
   }
 }
+  
