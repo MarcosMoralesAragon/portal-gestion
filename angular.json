@@ -31,7 +31,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/app/styles/custom-theme.scss",
+              "src/styles/custom-theme.scss",
               "src/styles.scss"
             ],
             "scripts": []

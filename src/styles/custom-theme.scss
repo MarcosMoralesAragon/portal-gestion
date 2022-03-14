@@ -102,13 +102,13 @@ $custom-warn: (
 
 // PALETA DE COLORES
 
-$custom-theme-primary: mat-pallet($custom-primary);
-$custom-theme-accent: mat-pallet($custom-accent);
-$custom-theme-warn: mat-pallet($custom-warn);
+$custom-theme-primary: mat-palette($custom-primary);
+$custom-theme-accent: mat-palette($custom-accent);
+$custom-theme-warn: mat-palette($custom-warn);
 
 // TEMA
 
-$custom-theme: mat-light-theme((
+$custom-theme: mat-dark-theme((
     color: (
         primary: $custom-theme-primary,
         accent: $custom-theme-accent,
