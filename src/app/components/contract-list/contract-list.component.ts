@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Contract } from 'src/app/models/contract';
 import { ContractService } from 'src/app/services/contract/contract.service';

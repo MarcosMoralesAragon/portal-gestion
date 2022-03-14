@@ -4,8 +4,6 @@ import { Worker } from 'src/app/models/worker';
 import { WorkerService } from 'src/app/services/worker/worker.service';
 import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component';
 import { DialogEditComponent } from '../dialog/dialog-edit/dialog-edit.component';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../snackbar/snackbar.component';
 import { Router } from '@angular/router';
 import { DateService } from 'src/app/services/date/date.service';
 import { StateService } from 'src/app/services/state/state.service';
