@@ -1,0 +1,121 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+// COLORES
+$custom-primary: (
+    50 : #e0f8e9,
+    100 : #b3edc8,
+    200 : #80e2a3,
+    300 : #4dd67e,
+    400 : #26cd63,
+    500 : #00c447,
+    600 : #00be40,
+    700 : #00b637,
+    800 : #00af2f,
+    900 : #00a220,
+    A100 : #ccffd2,
+    A200 : #99ffa6,
+    A400 : #66ff79,
+    A700 : #4dff63,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+$custom-accent: (
+    50 : #e0f7ff,
+    100 : #b3ebff,
+    200 : #80ddff,
+    300 : #4dcfff,
+    400 : #26c5ff,
+    500 : #00bbff,
+    600 : #00b5ff,
+    700 : #00acff,
+    800 : #00a4ff,
+    900 : #0096ff,
+    A100 : #ffffff,
+    A200 : #f2f9ff,
+    A400 : #bfe1ff,
+    A700 : #a6d6ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+$custom-warn: (
+    50 : #ffe9ed,
+    100 : #ffc8d3,
+    200 : #ffa3b6,
+    300 : #ff7e98,
+    400 : #ff6382,
+    500 : #ff476c,
+    600 : #ff4064,
+    700 : #ff3759,
+    800 : #ff2f4f,
+    900 : #ff203d,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffcfd5,
+    A700 : #ffb6be,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+// PALETA DE COLORES
+
+$custom-theme-primary: mat-palette($custom-primary);
+$custom-theme-accent: mat-palette($custom-accent);
+$custom-theme-warn: mat-palette($custom-warn);
+
+// TEMA
+
+$custom-theme: mat-dark-theme((
+    color: (
+        primary: $custom-theme-primary,
+        accent: $custom-theme-accent,
+        warn: $custom-theme-warn
+    )
+));
+
+// APLICAR TEMA 
+
+@include angular-material-theme($custom-theme);
