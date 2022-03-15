@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatDatepickerInputEvent, MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material/datepicker';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DateService } from 'src/app/services/date/date.service';
 import { Worker } from '../../../models/worker';
@@ -7,7 +7,8 @@ import { Worker } from '../../../models/worker';
 @Component({
   selector: 'app-dialog-edit',
   templateUrl: './dialog-edit.component.html',
-  styleUrls: ['./dialog-edit.component.scss']
+  styleUrls: ['./dialog-edit.component.scss'],
+  providers: [MAT_DATEPICKER_SCROLL_STRATEGY],
 })
 export class DialogEditComponent implements OnInit {
 
