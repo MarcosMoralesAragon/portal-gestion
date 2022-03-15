@@ -133,15 +133,15 @@ export class ListComponent implements OnInit {
   }
 
   navigateToCreate(){
-    this.router.navigateByUrl('/create')
+    this.router.navigateByUrl('/crud/create')
   }
 
   navigateToSeeDelete(){  
-    this.router.navigateByUrl('/bin')
+    this.router.navigateByUrl('/crud/bin')
   }
 
   navigateToContracts(workerId : string){
-    this.router.navigateByUrl('/list-contracts/' + workerId)
+    this.router.navigateByUrl('/crud/list-contracts/' + workerId)
   }
 
   refreshButton() : any{

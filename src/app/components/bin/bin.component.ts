@@ -73,7 +73,7 @@ export class BinComponent implements OnInit {
   }
 
   goBack(){
-    this.route.navigateByUrl('/list')
+    this.route.navigateByUrl('')
   }
 
   restoreAll(){
