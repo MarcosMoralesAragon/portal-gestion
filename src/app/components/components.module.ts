@@ -95,7 +95,10 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatButtonModule,
     HttpClientModule,
     MatNativeDateModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    DialogEditComponent,
+    DialogCreateContractComponent,
+    DialogEditContractComponent
   ],
   entryComponents: [
     DialogEditComponent,
