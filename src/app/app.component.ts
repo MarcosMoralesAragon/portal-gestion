@@ -26,69 +26,74 @@ export class AppComponent {
               private addressService : AddressService){}
   
   onFileSelected(event : any) {
-    // Saca el archivo introducido
-    let file:File = event.target.files[0];
-    // Limpia el input antes de usarlo
-    event.srcElement.value = "";
-    if(!file){
-      this.snackBarService.showSnackBarError("updateFile", "Subida de archivo cancelada")
-      return;
-    }
-    if(this.getFileExtension(file.name) !== "xlsx"){
-      this.snackBarService.showSnackBarError("updateFile", "Formato de archivo no admitido. Tiene que ser xlsx")
-      return;
-    } 
-    // Objeto que nos permite leer el archivo
-    var fileReader = new FileReader();
-    fileReader.readAsBinaryString(file)
-
-    fileReader.onload = (event:any) => {
-      // Saca los datos y lo vuelve un binario
-      let binaryData = event.target.result
-      // Crea un objeto con todos los datos del xlsx que le hemos pasado
-      let workbook = XLSX.read(binaryData,{type:'binary', cellDates : true})
-      if(!this.sheetNamesAreOk(workbook.SheetNames)){ 
-        this.snackBarService.showSnackBarError("updateFile", "Revise que las hojas del fichero estan correctas")
+    this.workerService.getWorkers().subscribe(serverOkay => {
+      // Saca el archivo introducido
+      let file:File = event.target.files[0];
+      // Limpia el input antes de usarlo
+      event.srcElement.value = "";
+      if(!file){
+        this.snackBarService.showSnackBarError("updateFile", "Subida de archivo cancelada")
         return;
       }
-      // Por cada hoja del xlsx lo combierte a un json los datos de las columnas
-      var workersWrong: Array<number> = []
-      var contractsWrong: Array<number> = []
-      var addressWrong: Array<number> = []
+      if(this.getFileExtension(file.name) !== "xlsx"){
+        this.snackBarService.showSnackBarError("updateFile", "Formato de archivo no admitido. Tiene que ser xlsx")
+        return;
+      } 
+      // Objeto que nos permite leer el archivo
+      var fileReader = new FileReader();
+      fileReader.readAsBinaryString(file)
 
-      workbook.SheetNames.forEach(sheet => {
-        // Hace json la hoja sheet
-        let data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
-              
-        switch (sheet) {
-
-          case "Empleados":
-            console.log("Esta en empleado");
-            this.addElement(data, this.workerService, this.checkWorker , workersWrong);
-          break;
-          case "Contratos":
-            console.log("Esta en contrato")
-            this.addElement(data, this.contractService, this.checkContract , contractsWrong);
-          break;
-
-          case "Direcciones":
-            console.log("Esta en dirección")
-            this.addElement(data, this.addressService, this.checkAddress , addressWrong);
-          break;
-                
-          default:
-          break;
+      fileReader.onload = (event:any) => {
+        // Saca los datos y lo vuelve un binario
+        let binaryData = event.target.result
+        // Crea un objeto con todos los datos del xlsx que le hemos pasado
+        let workbook = XLSX.read(binaryData,{type:'binary', cellDates : true})
+        if(!this.sheetNamesAreOk(workbook.SheetNames)){ 
+          this.snackBarService.showSnackBarError("updateFile", "Revise que las hojas del fichero estan correctas")
+          return;
         }
-      })
-      if(workersWrong.length > 0 || contractsWrong.length > 0 || addressWrong.length > 0 ){
-       setTimeout(() =>{ 
-         var info : string = this.infoWhereIsWrong(workersWrong, contractsWrong, addressWrong)
-         this.snackBarService.showSnackBarWarning("updateFile", "Algunas lineas del fichero no se han podído cargar por errores en sus datos , las líneas son : " + info)
-        }, 50)
-      } else {
-       this.snackBarService.showSnackBar("updateFile", "Fichero cargado con exito. Presione actualizar para ver las importaciones")
+        // Por cada hoja del xlsx lo combierte a un json los datos de las columnas
+        var workersWrong: Array<number> = []
+        var contractsWrong: Array<number> = []
+        var addressWrong: Array<number> = []
+
+        workbook.SheetNames.forEach(sheet => {
+          // Hace json la hoja sheet
+          let data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
+                
+          switch (sheet) {
+
+            case "Empleados":
+              console.log("Esta en empleado");
+              this.addElement(data, this.workerService, this.checkWorker , workersWrong);
+            break;
+            case "Contratos":
+              console.log("Esta en contrato")
+              this.addElement(data, this.contractService, this.checkContract , contractsWrong);
+            break;
+
+            case "Direcciones":
+              console.log("Esta en dirección")
+              this.addElement(data, this.addressService, this.checkAddress , addressWrong);
+            break;
+                  
+            default:
+            break;
+          }
+        })
+        if(workersWrong.length > 0 || contractsWrong.length > 0 || addressWrong.length > 0 ){
+        setTimeout(() =>{ 
+          var info : string = this.infoWhereIsWrong(workersWrong, contractsWrong, addressWrong)
+          this.snackBarService.showSnackBarWarning("updateFile", "Algunas lineas del fichero no se han podído cargar por errores en sus datos , las líneas son : " + info)
+          }, 50)
+        } else {
+        this.snackBarService.showSnackBar("updateFile", "Fichero cargado con exito. Presione actualizar para ver las importaciones")
+        }
       }
-    }
+    },
+    (error:any) => {
+      this.snackBarService.showSnackBarError("error", "Servidor desconectado, no se puede subir el archivo. " + error.message)
+    });
   }
 
 

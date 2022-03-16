@@ -49,6 +49,9 @@ export class ContractListComponent implements OnInit {
       this.dataSource = new MatTableDataSource<Contract>(this.contracts);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
+    },
+    (error:any) => {
+      this.snackBarService.showSnackBarError("error", "Servidor desconectado. " + error.message)
     })
   }
 

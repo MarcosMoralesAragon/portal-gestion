@@ -36,12 +36,19 @@ export class BinComponent implements OnInit {
               public dialogService : DialogService) { }
 
   ngOnInit(): void {
+    this.chargueData()
+  }
+
+  chargueData(){
     this.binService.getBin().subscribe(worker => {
       this.deletedWorkers = worker
       this.dataSource = new MatTableDataSource<Worker>(this.deletedWorkers);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
-    })
+    },
+    (error:any) => {
+      this.snackBarService.showSnackBarError("error", "Servidor desconectado. " + error.message)
+    });
   }
 
   delete(workerId : string){
@@ -55,7 +62,7 @@ export class BinComponent implements OnInit {
           this.snackBarService.showSnackBarError(result, "Acción cancelada")
           return;
         }
-        this.ngOnInit()
+        this.chargueData()
         this.snackBarService.showSnackBar(result, "¡Borrado con éxito!")
       })
     });
@@ -67,7 +74,7 @@ export class BinComponent implements OnInit {
         this.snackBarService.showSnackBarError("restore", "Algo salio mal")
         return;
       }
-      this.ngOnInit()
+      this.chargueData()
       this.snackBarService.showSnackBar("restore", "Restaurado todos con éxito!")
     })
   }
@@ -79,7 +86,7 @@ export class BinComponent implements OnInit {
   restoreAll(){
     this.binService.restoreAll().subscribe(isRestoredAll => {
       if(isRestoredAll){
-        this.ngOnInit()
+        this.chargueData()
         this.snackBarService.showSnackBar("restore", "Restaurados todos con éxito!")
       } else {
         this.snackBarService.showSnackBarError("restore", "Algo salio mal")
@@ -90,7 +97,7 @@ export class BinComponent implements OnInit {
   deleteAll(){
     this.binService.deleteAllBin().subscribe(allDeleted => {
       if(allDeleted){
-        this.ngOnInit()
+        this.chargueData()
         this.snackBarService.showSnackBar("delete", "¡Borrado con éxito!")
       }else{
         this.snackBarService.showSnackBarError("delete", "Algo salio mal")

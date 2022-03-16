@@ -1,5 +1,4 @@
 import {  Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog} from '@angular/material/dialog';
 import { Worker } from 'src/app/models/worker';
 import { WorkerService } from 'src/app/services/worker/worker.service';
 import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component';
@@ -15,7 +14,6 @@ import { AddressService } from 'src/app/services/address/address.service';
 import { DialogEditAddressComponent } from '../dialog/dialog-edit-address/dialog-edit-address.component';
 import { DialogCreateAddressComponent } from '../dialog/dialog-create-address/dialog-create-address.component';
 import { BinService } from 'src/app/services/bin/bin.service';
-import { Observable } from 'rxjs';
 import { SnackBarService } from 'src/app/services/snackBar/snack-bar.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
 
@@ -54,7 +52,9 @@ export class ListComponent implements OnInit {
       this.dataSource = new MatTableDataSource<Worker>(this.workers);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
-      return true;
+    },
+    (error:any) => {
+      this.snackBarService.showSnackBarError("error", "Servidor desconectado. " + error.message)
     });
   }
 
@@ -148,9 +148,5 @@ export class ListComponent implements OnInit {
   refreshButton() : any{
     this.ngOnInit()
     this.snackBarService.showSnackBar("refresh", "¡Refrescado con éxito!")
-  }
-
-  getWorkers(): Observable<any[]>{
-    return this.workerService.getWorkers()
   }
 }
