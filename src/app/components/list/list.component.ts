@@ -14,8 +14,8 @@ import { AddressService } from 'src/app/services/address/address.service';
 import { DialogEditAddressComponent } from '../dialog/dialog-edit-address/dialog-edit-address.component';
 import { DialogCreateAddressComponent } from '../dialog/dialog-create-address/dialog-create-address.component';
 import { BinService } from 'src/app/services/bin/bin.service';
-import { SnackBarService } from 'src/app/services/snackBar/snack-bar.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
+import { SnackBarService } from 'src/app/services/snackBar/snack-bar.service';
 
 @Component({
   selector: 'app-list',

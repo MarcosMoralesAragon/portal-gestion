@@ -7,7 +7,6 @@ import { AddressService } from './services/address/address.service';
 import { Worker } from './models/worker';
 import { Contract } from './models/contract';
 import { Address } from './models/address';
-import { Observable } from 'rxjs';
 import { SnackBarService } from './services/snackBar/snack-bar.service';
 
 @Component({

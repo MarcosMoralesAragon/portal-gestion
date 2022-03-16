@@ -11,8 +11,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { SnackBarService } from 'src/app/services/snackBar/snack-bar.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
+import { SnackBarService } from 'src/app/services/snackBar/snack-bar.service';
+
 
 @Component({
   selector: 'app-contract-list',
