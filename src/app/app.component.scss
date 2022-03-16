@@ -14,7 +14,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px;
-    background: cornflowerblue;
+    background: #00C447;
 }
 .nav-botones{
     margin: 5px;
@@ -22,4 +22,11 @@
 }
 .nav-bar__buttons{
     margin: 20px;
+}
+.file-input {
+    display: none;
+}
+
+::ng-deep snack-bar-container {
+    margin-top: 125px !important;
 }

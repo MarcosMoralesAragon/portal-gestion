@@ -7,21 +7,21 @@ export class PositionService {
 
   constructor() { }
 
-  getPositionToString(position : number): string{
+  getPositionToString(position : string): string{
     var positionInString : string = ""
     switch (position) {
-      case 0:
+      case "Executive":
         positionInString = "Directivo"
         break;
-      case 1:
+      case "Officer":
         positionInString = "Oficial"
         break;
     
-      case 2:
+      case "Worker":
         positionInString = "Operario"
         break;
 
-      case 3:
+      case "Technician":
         positionInString = "Tecnico"
         break;
 

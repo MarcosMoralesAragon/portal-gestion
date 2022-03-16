@@ -20,6 +20,10 @@ export class AddressService {
     return this.http.post(url, newAddress)
   }
 
+  addFromExcel(newAddress : unknown) {
+    return this.http.post(url, newAddress)
+  }
+
   updateAddress(addressEdited : Address){
     return this.http.put(url, addressEdited)
   }
